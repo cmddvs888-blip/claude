@@ -27,7 +27,8 @@ def wrap(body):
     return ('<!doctype html><html lang="fr"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1">'
             '<title>Cheapsappes — Le Guide de l\'Achat-Revente sur Vinted</title>'
-            '<link rel="stylesheet" href="style.css"></head><body>' + body + '</body></html>')
+            '<link rel="stylesheet" href="style.css"></head><body>'
+            '<div class="pagebg"></div>' + body + '</body></html>')
 
 def render(html_path, pdf_path):
     subprocess.run([CHROME, "--headless", "--disable-gpu", "--no-sandbox",

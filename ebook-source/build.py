@@ -619,7 +619,7 @@ page(
   ], cols=5) +
   quote("Les gens n'achètent pas ce que tu fais, ils achètent la raison pour laquelle tu le fais… et la confiance que tu inspires.","Adapté de Simon Sinek") +
   box("tip",
-    '<p>La <strong>première photo</strong> est ta vitrine dans le flux&nbsp;: c\'est elle qui déclenche le clic. Soigne-la comme une couverture de magazine — cadrage serré, lumière naturelle, pièce nette. Les 4 suivantes rassurent&nbsp;; la première, elle, <em>vend le clic</em>.</p>') +
+    '<p>La <strong>première photo</strong> est ta vitrine dans le flux&nbsp;: cadrage serré, lumière naturelle, pièce nette. Les 4 suivantes rassurent&nbsp;; la première, elle, <em>vend le clic</em>.</p>') +
   foot()
 )
 
@@ -938,7 +938,7 @@ divider("★","Conclusion","À toi de jouer.",
 page(
   eyebrow("Conclusion · Le message final") + hsec("La seule différence, c’est l’action.") +
   '<p class="lead">Fais le compte de ce que tu possèdes maintenant&nbsp;: le vocabulaire du métier, le mindset des revendeurs qui durent, le levier n°1 du secteur, des budgets chiffrés, un setup à moins de 50&nbsp;€, la recette de l’annonce qui vend, un tableau de bord, les stratégies de scaling, et deux plans d’action datés.</p>' +
-  '<p>Il y a six mois, les vendeurs que tu admires sur Vinted n’en savaient pas plus que toi aujourd’hui. La seule différence entre eux et la version de toi qui lira encore des guides dans un an, c’est ce que tu fais dans les <strong>dix prochaines minutes</strong>. Pas demain. Pas lundi. Maintenant, pendant que la motivation est chaude.</p>' +
+  '<p>Il y a six mois, ces vendeurs n’en savaient pas plus que toi. La seule différence entre eux et la version de toi qui lira encore des guides dans un an, c’est ce que tu fais dans les <strong>dix prochaines minutes</strong>. Pas demain. Maintenant, pendant que la motivation est chaude.</p>' +
   hsub("Tes dix minutes, chronomètre en main") +
   timeline([
     ("0-2","Date ton plan 7 jours","Ouvre ton agenda et pose ta date de J1 (exercice du chapitre 10)."),

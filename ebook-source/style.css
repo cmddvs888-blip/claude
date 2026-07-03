@@ -27,7 +27,19 @@
 
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-body{font-family:'Instrument',system-ui,sans-serif;color:var(--ink);font-size:12.1pt;line-height:1.52;background:#c9d4e6}
+body{font-family:'Instrument',system-ui,sans-serif;color:var(--ink);font-size:12.1pt;line-height:1.52;background:transparent}
+
+/* Fond de page brandé, répété sur chaque feuille de contenu (les posters opaques le couvrent) */
+.pagebg{position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(52% 34% at 88% 6%, rgba(15,181,176,.20), transparent 62%),
+    radial-gradient(60% 40% at -8% 102%, rgba(27,99,240,.18), transparent 60%),
+    radial-gradient(90% 60% at 50% 120%, rgba(15,181,176,.10), transparent 70%),
+    linear-gradient(168deg,#EDF4FF 0%,#E2ECFF 55%,#DAE7FF 100%);}
+.pagebg::before{content:"";position:absolute;right:-60mm;top:38%;width:150mm;height:150mm;border-radius:50%;
+  border:18mm solid rgba(27,99,240,.05);}
+.pagebg::after{content:"";position:absolute;left:14mm;bottom:12mm;width:34mm;height:34mm;border-radius:12mm;
+  background:linear-gradient(135deg,rgba(15,181,176,.10),rgba(27,99,240,.08));transform:rotate(12deg)}
 
 /* Auto-paginated content pages: footer + page number via @page margin boxes */
 @page{
@@ -46,7 +58,7 @@ body{font-family:'Instrument',system-ui,sans-serif;color:var(--ink);font-size:12
 /* Full-bleed poster pages (cover, chapter dividers, back cover) : no margin, no footer */
 @page poster{ margin:0; @bottom-left{content:none} @bottom-right{content:none} }
 
-.page{ background:var(--paper); break-after:page; }
+.page{ background:transparent; break-after:page; }
 .page:last-child{break-after:auto}
 /* keep atomic visual blocks whole; prose boxes may flow across a page break */
 .quote,.cta-band,.vswrap,.flow,.kpis,.tmo,.lexc,.card,.pcard,
@@ -60,9 +72,9 @@ h2,h3,h4{break-after:avoid}
 .pgmark{position:absolute;top:1mm;left:1mm;font-size:5pt;line-height:1;color:#123c9e;opacity:.02;letter-spacing:0}
 
 /* ---------- Typography helpers ---------- */
-.eyebrow{font-family:'Plex';font-weight:700;font-size:8pt;letter-spacing:.24em;text-transform:uppercase;color:var(--blue)}
+.eyebrow{display:inline-block;font-family:'Plex';font-weight:700;font-size:8pt;letter-spacing:.2em;text-transform:uppercase;color:#fff;background:linear-gradient(120deg,var(--blue),var(--teal));padding:2mm 4.5mm;border-radius:20mm;margin-bottom:2.6mm;box-shadow:0 6px 14px rgba(27,99,240,.28)}
 h1,h2,h3,h4{font-family:'Bricolage';font-weight:700;line-height:1.03;letter-spacing:-.015em;color:var(--ink)}
-.h-sec{font-size:22pt;line-height:1.05;margin:0 0 3mm}
+.h-sec{font-size:22pt;line-height:1.05;margin:0 0 2.6mm}
 .h-sub{font-size:15pt;line-height:1.08;margin:4.5mm 0 2.5mm;color:var(--navy)}
 p{margin:0 0 2.7mm}
 strong{font-weight:700;color:var(--navy)}
@@ -114,7 +126,7 @@ a{color:var(--blue);text-decoration:none}
   linear-gradient(155deg,#0A1533 0%,#0C2C72 62%,#134097 100%)}
 .divider .wrap{position:absolute;inset:0;padding:26mm 20mm}
 .divider .num{font-family:'Bricolage';font-weight:700;font-size:120pt;line-height:.8;color:rgba(255,255,255,.10);letter-spacing:-.04em;position:absolute;top:20mm;right:18mm}
-.divider .eyebrow{color:var(--teal)}
+.divider .eyebrow{color:var(--teal);background:none;box-shadow:none;padding:0;border-radius:0;margin-bottom:0;letter-spacing:.24em}
 .divider h1{font-size:60pt;line-height:.96;letter-spacing:-.03em;color:#fff;margin-top:5mm;max-width:150mm}
 .divider .dsub{margin-top:9mm;max-width:130mm;font-size:13.4pt;line-height:1.55;color:#cfe0ff}
 .divider .chips{position:absolute;left:20mm;bottom:42mm;display:flex;gap:4mm;flex-wrap:wrap}
@@ -125,18 +137,18 @@ a{color:var(--blue);text-decoration:none}
 /* ---------- QUOTE ---------- */
 .quote{position:relative;background:linear-gradient(135deg,var(--navy),#123c9e);color:#fff;border-radius:5mm;padding:6.5mm 8mm 6mm 8mm;margin:4mm 0}
 .quote .mk{font-family:'InstrSerif';font-size:44pt;line-height:.4;color:var(--teal);position:absolute;top:8mm;left:7mm;opacity:.55}
-.quote .qt{font-family:'InstrSerif';font-style:italic;font-size:17.5pt;line-height:1.2;padding-left:12mm}
+.quote .qt{font-family:'InstrSerif';font-style:italic;font-size:17pt;line-height:1.18;padding-left:12mm}
 .quote .au{font-family:'Plex';font-size:8.4pt;letter-spacing:.2em;text-transform:uppercase;color:#a9c2ee;margin-top:4mm;padding-left:12mm}
 
 /* ---------- BOXES ---------- */
-.box{border-radius:4.5mm;padding:5mm 6mm;margin:3.8mm 0;border:1.4px solid var(--line)}
+.box{border-radius:4.5mm;padding:4.8mm 6mm;margin:3.4mm 0;border:1px solid var(--line-2);box-shadow:0 12px 28px rgba(11,40,110,.10)}
 .box .bt{display:flex;align-items:center;gap:3mm;font-family:'Plex';font-weight:700;font-size:8.6pt;letter-spacing:.16em;text-transform:uppercase;margin-bottom:2.4mm}
 .box .ic{width:8mm;height:8mm;border-radius:2.4mm;display:flex;align-items:center;justify-content:center;font-size:11pt;flex:none}
 .box p{margin-bottom:2mm}
 .box p:last-child{margin-bottom:0}
 .box .who{font-weight:700;color:var(--navy);font-size:11.4pt;margin-bottom:2mm}
 
-.box--case{background:var(--paper-2);border-color:var(--line)}
+.box--case{background:#fff;border-color:var(--line-2)}
 .box--case .bt{color:var(--blue-2)} .box--case .ic{background:var(--sky);color:var(--blue)}
 .box--error{background:var(--red-bg);border-color:var(--red-line)}
 .box--error .bt{color:#B4241A} .box--error .ic{background:#F7D2CC;color:var(--red)}
@@ -159,7 +171,7 @@ a{color:var(--blue);text-decoration:none}
 /* ---------- CARDS GRID ---------- */
 .grid{display:grid;gap:4mm;margin:3.2mm 0}
 .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
-.card{background:var(--paper-2);border:1.4px solid var(--line);border-radius:4mm;padding:4.4mm}
+.card{background:#fff;border:1px solid var(--line-2);border-radius:4mm;padding:4.6mm;box-shadow:0 10px 24px rgba(11,40,110,.10)}
 .card .ct{font-family:'Bricolage';font-weight:700;font-size:12.4pt;color:var(--navy);margin-bottom:1.5mm;display:flex;align-items:center;gap:2.5mm}
 .card .cn{font-family:'Plex';font-weight:700;color:var(--blue);font-size:9pt}
 .card p{font-size:10.6pt;line-height:1.46;color:var(--muted);margin:0}
@@ -170,7 +182,7 @@ a{color:var(--blue);text-decoration:none}
 .card--num .idx{position:absolute;top:-3mm;left:5mm;width:9mm;height:9mm;border-radius:50%;background:var(--blue);color:#fff;font-family:'Bricolage';font-weight:700;font-size:12pt;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(27,99,240,.4)}
 
 /* ---------- TABLES ---------- */
-.tbl{width:100%;border-collapse:collapse;margin:3.2mm 0;font-size:10.4pt;border-radius:4mm;overflow:hidden;border:1.4px solid var(--line)}
+.tbl{width:100%;border-collapse:separate;border-spacing:0;margin:4mm 0;font-size:10.4pt;border-radius:4mm;overflow:hidden;border:1px solid var(--line-2);box-shadow:0 12px 28px rgba(11,40,110,.10);background:#fff}
 .tbl th{background:var(--navy);color:#fff;font-family:'Plex';font-weight:700;font-size:8.4pt;letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:3.4mm 4mm}
 .tbl td{padding:2.7mm 4mm;border-top:1px solid var(--line-2);vertical-align:top;line-height:1.36}
 .tbl tr:nth-child(even) td{background:var(--paper-2)}
@@ -180,7 +192,7 @@ a{color:var(--blue);text-decoration:none}
 .tbl .neg{color:var(--red);font-weight:700}
 
 /* comparison VS */
-.vs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:5mm 0;border-radius:4.5mm;overflow:hidden;border:1.4px solid var(--line)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:5mm 0;border-radius:4.5mm;overflow:hidden;border:1px solid var(--line-2);box-shadow:0 12px 28px rgba(11,40,110,.10)}
 .vs .col{padding:5mm 5.5mm}
 .vs .col--a{background:var(--red-bg)}
 .vs .col--b{background:var(--green-bg)}
@@ -196,7 +208,7 @@ a{color:var(--blue);text-decoration:none}
 
 /* ---------- FLOW / SCHEMA ---------- */
 .flow{display:flex;align-items:stretch;gap:0;margin:5mm 0}
-.flow .st{flex:1;background:var(--sky);border:1.4px solid var(--sky-2);border-radius:3.5mm;padding:4mm 3mm;text-align:center}
+.flow .st{flex:1;background:#fff;border:1px solid var(--line-2);border-radius:3.5mm;padding:4mm 3mm;text-align:center;box-shadow:0 8px 18px rgba(11,40,110,.08)}
 .flow .st .fi{font-size:17pt}
 .flow .st .fn{font-family:'Bricolage';font-weight:700;font-size:11pt;color:var(--navy);margin-top:1mm}
 .flow .st .fs{font-size:8.6pt;color:var(--muted);line-height:1.35;margin-top:.5mm}
@@ -204,7 +216,7 @@ a{color:var(--blue);text-decoration:none}
 
 /* ---------- KPI STAT ---------- */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:4mm;margin:4mm 0}
-.kpi{border:1.4px solid var(--line);border-radius:4mm;padding:4.5mm;background:#fff}
+.kpi{border:1px solid var(--line-2);border-radius:4mm;padding:4.5mm;background:#fff;box-shadow:0 10px 24px rgba(11,40,110,.10)}
 .kpi .kn{font-family:'Bricolage';font-weight:700;font-size:26pt;line-height:1;color:var(--blue-2)}
 .kpi .kl{font-family:'Plex';font-size:7.6pt;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:2mm;line-height:1.3}
 .kpi.tealk .kn{color:var(--teal-d)}
@@ -246,7 +258,7 @@ a{color:var(--blue);text-decoration:none}
 
 /* lexique */
 .lex{display:grid;grid-template-columns:1fr 1fr;gap:3.4mm}
-.lexc{background:var(--paper-2);border:1.4px solid var(--line);border-left:3px solid var(--blue);border-radius:3mm;padding:3.4mm 4mm}
+.lexc{background:#fff;border:1px solid var(--line-2);border-left:3px solid var(--blue);border-radius:3mm;padding:3.6mm 4mm;box-shadow:0 8px 18px rgba(11,40,110,.08)}
 .lexc .lt{font-family:'Bricolage';font-weight:700;font-size:11.8pt;color:var(--navy)}
 .lexc .ld{font-size:10pt;line-height:1.4;color:var(--ink);margin:1mm 0}
 .lexc .le{font-size:9pt;line-height:1.36;color:var(--teal-d);font-style:italic}
@@ -257,7 +269,7 @@ a{color:var(--blue);text-decoration:none}
 
 /* Testimonials */
 .tmos{display:grid;grid-template-columns:1fr 1fr;gap:4.5mm;margin:4mm 0}
-.tmo{background:var(--paper-2);border:1.4px solid var(--line);border-radius:4mm;padding:5mm}
+.tmo{background:#fff;border:1px solid var(--line-2);border-radius:4mm;padding:5mm;box-shadow:0 10px 24px rgba(11,40,110,.10)}
 .tmo .st{color:var(--gold);font-size:10pt;letter-spacing:1px}
 .tmo .tq{font-size:10.6pt;line-height:1.45;color:var(--ink);margin:2mm 0 3mm}
 .tmo .who2{display:flex;align-items:center;gap:3mm}
