@@ -169,6 +169,7 @@ for n,t,d,p in toc:
            f'<div class="toct"><div class="tt">{t}</div><div class="td">{d}</div></div>'
            f'<div class="tocp">@@TOC:{_key(n)}@@</div></div>')
 page(
+  '<div class="pfresh"></div>' +
   eyebrow("Sommaire") + hsec("Ton parcours, chapitre par chapitre.") +
   f'<div class="toc">{rows}</div>' +
   foot()
@@ -176,6 +177,7 @@ page(
 
 # ---- P4 REPERES VISUELS ----
 page(
+  '<div class="pfresh"></div>' +
   eyebrow("Mode d\'emploi") + hsec("Les repères visuels de ce guide.") +
   '<p class="lead">Tout au long de ta lecture, tu croiseras ces cinq encadrés. Chacun a un rôle précis&nbsp;: repère-les, ils sont le squelette de la méthode.</p>' +
   '<div class="grid g2" style="margin-top:5mm">'
@@ -242,7 +244,7 @@ page(
   flow([("🧱","Fondations","lexique + mindset"),("⚙️","Mécanique","sourcing + budget + annonces"),("🚀","Accélération","KPIs + scaling"),("✅","Passage à l'action","checklist + plans datés")]) +
   '<p>Chaque chapitre est une brique&nbsp;: pris isolément ils informent, empilés dans l\'ordre ils construisent un business qui tourne.</p>' +
   box("tip","<p>Bloque dès maintenant 3 créneaux de 45 minutes dans ton agenda cette semaine&nbsp;: un pour lire, un pour préparer ton setup, un pour publier tes premières annonces. Un projet qui n\'a pas de créneau n\'a pas de réalité.</p>", tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Prends 5 minutes et écris — sur papier ou dans tes notes — ton «&nbsp;pourquoi&nbsp;»&nbsp;:</p>'
     '<ol>'
     '<li>La somme mensuelle qui changerait ton quotidien (sois précis&nbsp;: 150&nbsp;€&nbsp;? 400&nbsp;€&nbsp;? 1&nbsp;000&nbsp;€&nbsp;?)&nbsp;: <span class="fill"></span></li>'
@@ -254,7 +256,7 @@ page(
     "Vinted est la porte d'entrée la plus accessible vers un revenu complémentaire&nbsp;: zéro frais fixes, demande énorme, cash-flow rapide.",
     "Vendre est facile&nbsp;; <strong>sourcer</strong> est le vrai métier — et c'est le problème que ce guide va résoudre pour toi.",
     "La lecture ne paie pas, l'exécution paie&nbsp;: un exercice par chapitre, sans exception.",
-  ], cta="Prêt à sauter l’étape la plus difficile du métier&nbsp;? L’agent Cheapsappes source à ta place.") +
+  ], cta="Prêt à sauter l’étape la plus difficile du métier&nbsp;? L’agent Cheapsappes source à ta place.") + '</div>' +
   foot()
 )
 
@@ -334,7 +336,7 @@ page(
   box("case",
     '<div class="who">Le réflexe pricing de Léa — 24 ans, Rennes</div>'
     '<p>Léa applique une règle tirée de ce lexique&nbsp;: toujours calculer la <strong>marge nette</strong>, jamais la brute. Sur une veste «&nbsp;achetée 12&nbsp;€, vendue 30&nbsp;€&nbsp;», elle déduit 1,50&nbsp;€ de frais et 0,80&nbsp;€ de consommables&nbsp;: marge nette réelle de 15,70&nbsp;€, pas 18&nbsp;€. Multiplié par 40 ventes/mois, ce réflexe lui évite de surestimer ses gains de plus de 90&nbsp;€. «&nbsp;Connaître les mots, c’est déjà éviter les pièges.&nbsp;»', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Sans regarder&nbsp;: écris la définition de ces 4 termes. Si tu bloques, relis la fiche.</p>'
     '<ol><li><strong>Sell-through</strong>&nbsp;: <span class="fill"></span></li>'
     '<li><strong>Prix de revient</strong>&nbsp;: <span class="fill"></span></li>'
@@ -344,7 +346,7 @@ page(
     "Le vocabulaire n'est pas du jargon&nbsp;: c'est la carte du terrain sur lequel tu vas jouer.",
     "Deux familles&nbsp;: les termes de la <strong>plateforme</strong> (vues, favoris, boost…) et ceux du <strong>métier</strong> (sourcing, marge, rotation…).",
     "Le trio qui décide de ta rentabilité&nbsp;: <strong>prix de revient, marge nette, rotation.</strong>",
-  ], cta="Passe de la théorie au stock réel&nbsp;: découvre l’agent Cheapsappes.") +
+  ], cta="Passe de la théorie au stock réel&nbsp;: découvre l’agent Cheapsappes.") + '</div>' +
   foot()
 )
 
@@ -401,7 +403,7 @@ page(
      ["«&nbsp;Je teste 5 méthodes en même temps.&nbsp;»","La dispersion","Revenir à un geste simple, répété chaque semaine"]]) +
   box("tip",
     '<p>Signe un «&nbsp;contrat 90 jours&nbsp;» avec toi-même&nbsp;: quoi qu\'il arrive, tu publies et tu pilotes pendant 90 jours avant de juger. La plupart des abandons arrivent à la semaine 3, juste avant que ça décolle. Ne fais pas partie des 80&nbsp;%.</p>', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Complète ton contrat d\'engagement, à voix haute puis par écrit&nbsp;:</p>'
     '<ol><li>Je m\'engage à publier au moins <span class="fill"></span> annonces par semaine.</li>'
     '<li>Je ne juge pas mes résultats avant le <span class="fill"></span> (date à +90 jours).</li>'
@@ -411,7 +413,7 @@ page(
     "Spécialise-toi, soigne tes photos, fixe tes prix sur le marché, chouchoute l'après-vente.",
     "Le mur du sourcing fait abandonner la majorité&nbsp;: anticipe-le <strong>avant</strong> qu'il n'arrive (chapitre suivant).",
     "90 jours d'exécution constante battent 900 jours d'hésitation.",
-  ], cta="Le bon mindset mérite un stock qui tourne. Découvre l’agent Cheapsappes.") +
+  ], cta="Le bon mindset mérite un stock qui tourne. Découvre l’agent Cheapsappes.") + '</div>' +
   foot()
 )
 
@@ -465,7 +467,7 @@ page(
     '<p><strong>Avant&nbsp;:</strong> 6&nbsp;h de chine chaque samedi, 8 pièces à ~11&nbsp;€, qualité inégale, ~150&nbsp;€ de bénéfice/mois. <strong>Après passage à un agent&nbsp;:</strong> commande de 30 pièces en 10 minutes, coût unitaire -40&nbsp;%, qualité homogène. Ses samedis libérés servent aux photos et à l\'optimisation. Troisième mois&nbsp;: <strong>420&nbsp;€ de bénéfice</strong>, pour moins de temps qu\'avant. «&nbsp;Je pensais économiser en sourçant moi-même. En réalité, je brûlais mon temps et ma marge.&nbsp;»</p>') +
   box("error",
     '<p><strong>Le «&nbsp;lot mystère&nbsp;» à 2&nbsp;€ la pièce.</strong> Les plateformes regorgent de lots «&nbsp;incroyables&nbsp;» vendus au kilo par des inconnus&nbsp;: photos volées, vêtements tachés, tailles mortes, contrefaçons. Le prix bas cache un coût réel énorme (invendables + temps perdu). Un vrai agent, c\'est l\'inverse&nbsp;: sélection, contrôle, traçabilité.</p>') +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Calcule ton <strong>vrai taux horaire</strong> de sourcing solo&nbsp;:</p>'
     '<ol><li>Heures passées (trajet + recherche + tri + lavage)&nbsp;: <span class="fill"></span> h</li>'
     '<li>Marge nette totale dégagée&nbsp;: <span class="fill"></span> €</li>'
@@ -476,7 +478,7 @@ page(
     "Les 3 murs du solo — temps, régularité, prix — plafonnent ton business&nbsp;; l'agent les fait tomber.",
     "Tous les gros vendeurs ont industrialisé leur approvisionnement&nbsp;: c'est la condition du volume.",
     "Commande test d'abord, volume ensuite&nbsp;: on valide le cycle avant de l'amplifier.",
-  ]) +
+  ]) + '</div>' +
   cta_band("Je découvre l'agent Cheapsappes",
            "L'accès sourcing pensé pour les revendeurs Vinted francophones&nbsp;: stock sélectionné, prix négociés, contrôle qualité. Du starter pack au réassort en volume.") +
   foot()
@@ -534,7 +536,7 @@ page(
     '<p>Naïma refuse de «&nbsp;deviner&nbsp;». Elle fixe un objectif simple&nbsp;: <strong>10 ventes/mois au palier 1</strong>. Elle réinvestit tout pendant 3 mois. M1&nbsp;: 7 ventes. M2&nbsp;: 15. M3&nbsp;: 24 ventes, ~250&nbsp;€ de marge, et un stock qui ne désemplit plus grâce à un réassort régulier. «&nbsp;Je n\'ai jamais eu de gros mois miracle. J\'ai eu des petits mois réguliers qui se sont empilés.&nbsp;»</p>') +
   box("error",
     '<p><strong>Griller son capital en «&nbsp;coups de cœur&nbsp;».</strong> Le débutant achète des pièces qu\'il aime, pas des pièces qui <em>tournent</em>. Résultat&nbsp;: du stock immobilisé et zéro cash pour réassortir. Achète pour le marché, pas pour ta garde-robe.</p>', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Pose tes chiffres de départ&nbsp;:</p>'
     '<ol><li>Mon budget de lancement&nbsp;: <span class="fill"></span> €</li>'
     '<li>Mon objectif de marge nette au 3ᵉ mois&nbsp;: <span class="fill"></span> €</li>'
@@ -544,7 +546,7 @@ page(
     "Le moteur, c'est le <strong>réinvestissement</strong>&nbsp;: fais tourner ton capital, applique le 70/30.",
     "Vise des paliers concrets et mesurables plutôt qu'un rêve flou.",
     "Achète ce qui tourne, pas ce que tu aimes.",
-  ], cta="Fais tourner ton capital plus vite grâce à un réassort régulier.") +
+  ], cta="Fais tourner ton capital plus vite grâce à un réassort régulier.") + '</div>' +
   foot()
 )
 
@@ -589,13 +591,13 @@ page(
     '<p><strong>Surinvestir avant la première vente.</strong> Ring light, imprimante d’étiquettes, logiciels payants… s’équiper «&nbsp;comme un pro&nbsp;» avant d’avoir vendu une seule pièce transforme un business rentable en passe-temps coûteux. Ton smartphone et la lumière du jour suffisent pour tes 50 premières ventes.</p>') +
   box("tip",
     '<p>Monte une <strong>station de production permanente</strong>&nbsp;: un coin fixe avec ton fond, ta lumière et tes 3 bacs, opérationnel en 30 secondes. Le frein n°1 à la publication, c’est le temps d’installation&nbsp;; en le supprimant, tu publies bien plus souvent — exactement comme la communauté Cheapsappes qui reçoit un stock déjà trié, prêt à photographier.</p>', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Prépare ton poste en 3 décisions&nbsp;: où sera ta <strong>station photo</strong> (<span class="fill"></span>), quand sera ton <strong>créneau publication</strong> hebdo (<span class="fill"></span>), et quel <strong>jour</strong> tu expédies (<span class="fill"></span>).</p>', "Exercice pratique — installe ton poste") +
   recap([
     "30 à 50&nbsp;€ suffisent&nbsp;: ne surinvestis jamais avant d'avoir vendu.",
     "Le vrai gain de temps vient du <strong>travail par lots</strong>, pas d'outils coûteux.",
     "Sépare l'argent du business dès le premier euro.",
-  ], cta="Ton setup est prêt&nbsp;? Il ne te manque que le stock. Accède à l’agent.") +
+  ], cta="Ton setup est prêt&nbsp;? Il ne te manque que le stock. Accède à l’agent.") + '</div>' +
   foot()
 )
 
@@ -655,14 +657,14 @@ page(
     '<p>Inès avait 15 annonces «&nbsp;mortes&nbsp;» depuis des semaines. Un dimanche, elle refait <strong>seulement les photos et les titres</strong> — sans toucher aux prix. Dans les 5 jours&nbsp;: <strong>6 ventes</strong>. Même stock, même prix, autre présentation. «&nbsp;Je croyais que mes pièces ne valaient rien. En fait, mes annonces ne les vendaient pas.&nbsp;»</p>') +
   box("error",
     '<p><strong>Mentir sur l\'état pour vendre plus vite.</strong> Un petit défaut caché = un litige, un remboursement, une mauvaise note, et un algorithme qui te punit. L\'honnêteté n\'est pas qu\'une valeur&nbsp;: c\'est la stratégie la plus rentable à long terme.</p>', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Choisis une pièce et rédige son annonce complète&nbsp;: titre (<span class="fill"></span>), les 4 blocs de description, et le prix avec 10&nbsp;% de marge négo. Chronomètre-toi&nbsp;: vise moins de 5 minutes.</p>', "Exercice pratique — ta première annonce optimisée") +
   recap([
     "Cinq leviers&nbsp;: photo, titre, description, prix, timing. Chacun compte.",
     "La 1ʳᵉ photo vend le clic&nbsp;; la description honnête tue les litiges.",
     "Le prix est vivant&nbsp;: lis les signaux (vues/favoris) et ajuste.",
     "Publie au créneau d'or&nbsp;: dimanche soir.",
-  ], cta="De belles annonces méritent de belles pièces&nbsp;: source-les via l’agent.") +
+  ], cta="De belles annonces méritent de belles pièces&nbsp;: source-les via l’agent.") + '</div>' +
   foot()
 )
 
@@ -708,13 +710,13 @@ page(
     '<p><strong>Piloter au feeling.</strong> «&nbsp;J’ai l’impression que ça marche&nbsp;» n’est pas un KPI. Sans chiffres, tu ignores quelles pièces immobilisent ton cash et quelles photos sous-performent — et tu réinvestis à l’aveugle. Cinq minutes de tableau de bord par semaine valent mieux qu’une heure d’intuition.</p>') +
   box("tip",
     '<p>Chaque dimanche, ne regarde qu’UN chiffre pour décider&nbsp;: le <strong>sell-through</strong>. S’il monte, réassortis&nbsp;; s’il stagne, retravaille photos et prix avant d’acheter davantage. Un canal de réassort fiable (comme l’agent Cheapsappes) te laisse agir dès que le chiffre le dit, sans attendre ta prochaine chine.</p>', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Crée ton tableau ce soir (15 min). Renseigne tes 3 KPIs de départ&nbsp;: marge nette de la semaine (<span class="fill"></span>), sell-through (<span class="fill"></span>), délai moyen de vente (<span class="fill"></span>).</p>', "Exercice pratique — monte ton tableau de bord") +
   recap([
     "Cinq KPIs suffisent&nbsp;: marge nette, sell-through, délai de vente, panier moyen, note.",
     "Deux onglets&nbsp;: le stock pièce par pièce, le bilan hebdomadaire.",
     "Les chiffres révèlent le capital <em>mort</em>&nbsp;: déstocke, réinvestis dans ce qui tourne.",
-  ], cta="Des pièces qui tournent = des KPIs qui montent. Découvre l’agent.") +
+  ], cta="Des pièces qui tournent = des KPIs qui montent. Découvre l’agent.") + '</div>' +
   foot()
 )
 
@@ -757,14 +759,14 @@ page(
     '<p><strong>Scaler le chaos.</strong> Amplifier un business désorganisé ne fait qu’amplifier le désordre&nbsp;: ruptures, retards d’envoi, mauvaises notes. Systématise <em>avant</em> d’accélérer&nbsp;: routine, tableau de bord et approvisionnement fiable d’abord.</p>') +
   box("tip",
     '<p>La contrainte n°1 du scaling, c’est presque toujours le stock. Sécurise un <strong>réassort automatique</strong> (c’est le rôle de l’agent Cheapsappes) avant d’augmenter tes volumes de publication&nbsp;: tu ne veux jamais que tes meilleures annonces pointent vers un dressing vide.</p>', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Dessine ta semaine type&nbsp;: place tes 4 blocs de 45 min dans ton agenda réel. Lundi <span class="fill"></span> · Mercredi <span class="fill"></span> · Vendredi <span class="fill"></span> · Dimanche <span class="fill"></span>.</p>', "Exercice pratique — verrouille ta routine") +
   recap([
     "Scaler, c’est systématiser&nbsp;: volume, organisation, réinvestissement, automatisation.",
     "Une semaine type en 4 blocs bat toutes les poussées de motivation.",
     "Le stock est le goulot d’étranglement&nbsp;: automatise le sourcing en priorité.",
     "Systématise avant d’accélérer&nbsp;: on n’amplifie pas le chaos.",
-  ], cta="Le stock est le nerf du scaling&nbsp;: automatise-le avec l’agent Cheapsappes.") +
+  ], cta="Le stock est le nerf du scaling&nbsp;: automatise-le avec l’agent Cheapsappes.") + '</div>' +
   foot()
 )
 
@@ -832,14 +834,14 @@ page(
     '<p>Commence <strong>petit mais vite</strong>&nbsp;: un starter pack aujourd’hui vaut mieux qu’un «&nbsp;gros lancement&nbsp;» dans trois mois. Le délai de livraison de ta première commande devient ton compte à rebours&nbsp;: il t’oblige à préparer ton setup et tes annonces pendant que le stock arrive.</p>') +
   box("error",
     '<p><strong>Croire au «&nbsp;stock magique&nbsp;» sans méthode.</strong> Un bon approvisionnement accélère un système qui fonctionne — il ne remplace ni les photos, ni les prix, ni le service. L’agent Cheapsappes optimise ton achat&nbsp;; à toi d’appliquer les chapitres 6 et 7. Ce n’est pas un substitut au volant, c’est un turbo.</p>') +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Décide maintenant&nbsp;: quel pack correspond à ton budget de départ (<span class="fill"></span>), et quelle date tu te fixes pour passer ta première commande sur cheapsappes.shop (<span class="fill"></span>).</p>', "Exercice pratique — choisis ton point de départ", tail=True) +
   recap([
     "L’agent premium Cheapsappes&nbsp;: stock sélectionné, prix négociés, contrôle qualité, réassort régulier.",
     "Il renforce chaque brique de la méthode&nbsp;: mindset, budget, annonces, scaling.",
     "Un pack pour chaque étape&nbsp;: starter pour valider, volume pour scaler.",
     "Le meilleur moment pour sécuriser ton stock, c’est <strong>maintenant</strong>.",
-  ]) +
+  ]) + '</div>' +
   cta_band("Accède à ton stock dès aujourd’hui",
            "Choisis le pack adapté à ton budget et lance ton compte à rebours. Sélection, contrôle qualité et réassort inclus&nbsp;: tu n’as plus qu’à vendre.",
            "Accéder à l’agent Cheapsappes") +
@@ -917,14 +919,14 @@ page(
     '<p>Yanis n’a rien inventé&nbsp;: il a imprimé la checklist et suivi le plan jour par jour, sans improviser. <strong>J7&nbsp;:</strong> 10 annonces en ligne un dimanche soir. <strong>J9&nbsp;:</strong> première vente. <strong>J30&nbsp;:</strong> 11 ventes, 142&nbsp;€ de marge nette, réassort commandé. «&nbsp;J’ai juste fait ce qui était écrit, dans l’ordre.&nbsp;»') +
   box("error",
     '<p><strong>Vouloir tout faire en un jour.</strong> Le plan est réparti sur 7 jours pour une raison&nbsp;: chaque étape prépare la suivante. Brûler les étapes, c’est publier des annonces bâclées — et repartir de zéro. La régularité bat l’intensité.</p>', tail=True) +
-  box("ex",
+  '<div class="chclose">' + box("ex",
     '<p>Date ton plan maintenant. Mon J1 sera le&nbsp;: <span class="fill"></span>. Donc ma publication (J7) tombera le&nbsp;: <span class="fill"></span>. Écris ces deux dates là où tu les verras chaque jour.</p>', "Exercice pratique — pose tes dates") +
   recap([
     "La checklist transforme la méthode en actions cochables.",
     "7 jours pour être en ligne&nbsp;; 30 jours pour un système qui tourne.",
     "Régularité &gt; intensité&nbsp;: une étape par jour, dans l’ordre.",
     "Fin du mois 1&nbsp;: capital &gt; capital de départ, et cycle 2 lancé.",
-  ], cta="Coche la première vraie case dès aujourd’hui&nbsp;: commande ton premier pack.") +
+  ], cta="Coche la première vraie case dès aujourd’hui&nbsp;: commande ton premier pack.") + '</div>' +
   foot()
 )
 
@@ -945,11 +947,13 @@ page(
     ("2-5","Écris ton pourquoi","Ton objectif à 90 jours, en une phrase. Colle-le en fond d’écran."),
     ("5-10","Passe ta première commande","Va sur cheapsappes.shop, choisis le pack adapté à ton budget. Ton compte à rebours démarre à la confirmation."),
   ]) +
+  '<div class="chclose">' +
   quote("Dans un an, tu regretteras peut-être de ne pas avoir commencé aujourd’hui.","Karen Lamb") +
   cta_band("Commence maintenant, pas «&nbsp;un jour&nbsp;»",
            "Dans une semaine, ton dressing sera en ligne. Dans un mois, tes premières dizaines de ventes. Tout commence par la première pièce mise en vente.",
            "Accéder à mon stock sur cheapsappes.shop") +
   '<p class="center mut" style="margin-top:4mm">On se retrouve de l’autre côté — dans la communauté, et en haut des résultats de recherche Vinted.<br><strong style="color:#0E1B39">— L’équipe Cheapsappes</strong></p>' +
+  '</div>' +
   foot()
 )
 
