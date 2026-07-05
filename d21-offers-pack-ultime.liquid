@@ -106,9 +106,9 @@
       <p class="d21-card__price-label">{{ section.settings.card2_price_label | default: 'Paiement unique • Accès à vie' }}</p>
       <ul class="d21-card__features">
         {% assign feats2 = section.settings.card2_features | split: "|" %}
-        {% for feat in feats2 %}<li><span class="d21-card__dot d21-card__dot--gray"></span>{{ feat | strip }}</li>{% endfor %}
+        {% for feat in feats2 %}<li><span class="d21-card__dot"></span>{{ feat | strip }}</li>{% endfor %}
       </ul>
-      <button class="d21-card__buy d21-card__buy--outline d21-buy-btn" data-variant-id="{{ section.settings.card2_variant_id }}" {% if section.settings.card2_disabled %}disabled aria-disabled="true"{% endif %}>{% if section.settings.card2_disabled %}{{ section.settings.card2_disabled_text | default: 'Bientôt disponible' }}{% else %}{{ section.settings.card2_cta | default: 'Acheter maintenant' }}{% endif %}</button>
+      <button class="d21-card__buy d21-card__buy--dark d21-buy-btn" data-variant-id="{{ section.settings.card2_variant_id }}" {% if section.settings.card2_disabled %}disabled aria-disabled="true"{% endif %}>{% if section.settings.card2_disabled %}{{ section.settings.card2_disabled_text | default: 'Bientôt disponible' }}{% else %}{{ section.settings.card2_cta | default: 'Acheter maintenant' }}{% endif %}</button>
       <div class="d21-card__pay-icons"><div class="d21-card__pay-icon"></div><div class="d21-card__pay-icon"></div><div class="d21-card__pay-icon"></div><div class="d21-card__pay-icon"></div></div>
       <div class="d21-card__trust"><span class="d21-card__trust-item">Paiement sécurisé</span><span class="d21-card__trust-item">Livraison immédiate</span><span class="d21-card__trust-item">Accès immédiat</span></div>
     </div>
@@ -217,7 +217,7 @@ function d21SwitchTab(tab, btn) {
     { "type": "textarea", "id": "card1_features", "label": "Features (séparées par |)", "default": "Accès fournisseur | Marges et pricing | 2 stratégies bonus | Plan de lancement" },
     { "type": "text", "id": "card1_cta", "label": "Texte bouton", "default": "Acheter maintenant" },
     { "type": "header", "content": "Carte 3 — Ebook" },
-    { "type": "checkbox", "id": "card2_disabled", "label": "⚠️ Désactiver le bouton (non cliquable)", "default": true, "info": "Coché = bouton non cliquable. Décoche dès que tu veux activer la vente." },
+    { "type": "checkbox", "id": "card2_disabled", "label": "⚠️ Désactiver le bouton (non cliquable)", "default": false, "info": "Coché = bouton non cliquable. Décoche dès que tu veux activer la vente." },
     { "type": "text", "id": "card2_disabled_text", "label": "Texte bouton désactivé", "default": "Bientôt disponible" },
     { "type": "text", "id": "card2_variant_id", "label": "ID Variant Shopify" },
     { "type": "text", "id": "card2_name", "label": "Nom", "default": "MARKETING & ASTUCES" },
