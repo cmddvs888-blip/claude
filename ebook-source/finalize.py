@@ -18,9 +18,13 @@ NEEDLE = {
 
 def build_body():
     ns = {}
+    exec(open(os.path.join(HERE, "icons.py"), encoding="utf-8").read(), ns)
     exec(open(os.path.join(HERE, "build.py"), encoding="utf-8").read(), ns)
     body = "".join(ns["PAGES"])
     body = re.sub(r"([A-Za-zÀ-ÿ])'([A-Za-zÀ-ÿ])", r"\1’\2", body)  # apostrophes courbes FR
+    # icônes SVG (vectorielles, rendu identique mobile/desktop)
+    body = re.sub(r"@@IC:([a-z]+)@@", lambda m: ns["ic"](m.group(1)), body)
+    body = re.sub(r"@@DOT:(#[0-9A-Fa-f]+)@@", lambda m: ns["dot"](m.group(1)), body)
     return body
 
 def wrap(body):
