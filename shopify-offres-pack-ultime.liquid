@@ -1,0 +1,263 @@
+{% comment %}
+============================================================
+  CHEAPSAPPES — Section "Offres Produits" (3 offres + compteur)
+  À coller dans : Boutique en ligne > Thèmes > (…) > Modifier le code
+  Crée le fichier : sections/offres-pack-ultime.liquid  → colle tout ceci.
+  Puis dans l'éditeur de thème : "Ajouter une section" > "Offres — Pack Ultime".
+  TOUT est modifiable dans l'éditeur (titres, prix, prix barré, points,
+  boutons, textes du compteur). Le compteur est un rolling 48 h qui se
+  relance tout seul et met à jour la date "jusqu'au …".
+  Astuce : duplique d'abord ton thème (sécurité) avant d'installer.
+============================================================
+{% endcomment %}
+
+<div class="ya2s" id="ya2s-{{ section.id }}">
+  {% if section.settings.heading != blank %}
+    <h2 class="ya2s__title">{{ section.settings.heading }}</h2>
+  {% endif %}
+  {% if section.settings.subheading != blank %}
+    <p class="ya2s__sub">{{ section.settings.subheading }}</p>
+  {% endif %}
+
+  {% comment %} ---- Toggle sélectionnable (1 bouton par offre) ---- {% endcomment %}
+  <div class="ya2s__toggle">
+    {% for block in section.blocks %}
+      <button type="button" class="ya2s__tg{% if forloop.first %} is-active{% endif %}"
+              data-target="c-{{ block.id }}">{{ block.settings.toggle_label }}</button>
+    {% endfor %}
+  </div>
+
+  {% comment %} ---- Les cartes ---- {% endcomment %}
+  <div class="ya2s__cards">
+    {% for block in section.blocks %}
+      <div class="ya2s__card{% if block.settings.highlight %} is-hl{% endif %}{% if forloop.first %} is-shown{% endif %}"
+           id="c-{{ block.id }}" {{ block.shopify_attributes }}>
+
+        <div class="ya2s__head">
+          <span class="ya2s__name">{{ block.settings.name }}</span>
+          {% if block.settings.badge != blank %}
+            <span class="ya2s__badge">{{ block.settings.badge }}</span>
+          {% endif %}
+        </div>
+
+        {% if block.settings.description != blank %}
+          <p class="ya2s__desc">{{ block.settings.description }}</p>
+        {% endif %}
+
+        <div class="ya2s__pricerow">
+          {% if block.settings.compare_price != blank %}
+            <span class="ya2s__compare">{{ block.settings.compare_price }}</span>
+          {% endif %}
+          <span class="ya2s__price">{{ block.settings.price }}</span>
+        </div>
+        {% if block.settings.period != blank %}
+          <div class="ya2s__period">{{ block.settings.period }}</div>
+        {% endif %}
+
+        <ul class="ya2s__feats">
+          {% for i in (1..6) %}
+            {% assign fkey = 'feature_' | append: i %}
+            {% assign fval = block.settings[fkey] %}
+            {% if fval != blank %}
+              <li><span class="ya2s__dot"></span>{{ fval }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+
+        <a href="{{ block.settings.cta_url | default: '#' }}"
+           class="ya2s__cta{% if block.settings.dark_button %} is-dark{% endif %}">
+          {{ block.settings.cta_label }}
+        </a>
+
+        {% comment %} ---- Compteur (remplace les blocs "invisibles") ---- {% endcomment %}
+        {% if section.settings.show_timer %}
+          <div class="ya2s__timer" data-cycle="{{ section.settings.cycle_hours }}">
+            {% if section.settings.promo_text != blank %}
+              <div class="ya2s__promo">{{ section.settings.promo_text }}</div>
+            {% endif %}
+            <div class="ya2s__clock" aria-live="polite">
+              <span class="ya2s__seg"><b data-h>00</b><i>h</i></span>
+              <span class="ya2s__seg"><b data-m>00</b><i>min</i></span>
+              <span class="ya2s__seg"><b data-s>00</b><i>s</i></span>
+            </div>
+            <div class="ya2s__deadline">{{ section.settings.date_prefix }} <span data-date></span></div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.trust != blank %}
+          <div class="ya2s__trust">{{ block.settings.trust }}</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  #ya2s-{{ section.id }}.ya2s{ --accent:{{ section.settings.accent }}; --dark:#111827; --ink:#111827; --muted:#6b7280; --line:#e6e8ec;
+    max-width:1080px; margin:0 auto; padding:{{ section.settings.padding_top }}px 18px {{ section.settings.padding_bottom }}px;
+    font-family:inherit; text-align:center; }
+  #ya2s-{{ section.id }} .ya2s__title{ font-size:clamp(28px,4.5vw,44px); font-weight:800; letter-spacing:-.02em; color:var(--ink); margin:0 0 10px;}
+  #ya2s-{{ section.id }} .ya2s__sub{ color:var(--muted); font-size:16px; max-width:620px; margin:0 auto 26px; line-height:1.5;}
+  /* Toggle */
+  #ya2s-{{ section.id }} .ya2s__toggle{ display:inline-flex; gap:4px; background:#f1f3f5; border-radius:999px; padding:5px; margin-bottom:30px; flex-wrap:wrap; justify-content:center;}
+  #ya2s-{{ section.id }} .ya2s__tg{ border:0; background:transparent; cursor:pointer; font:inherit; font-weight:700; font-size:13px; letter-spacing:.02em;
+    color:var(--muted); padding:10px 20px; border-radius:999px; transition:.15s; text-transform:uppercase;}
+  #ya2s-{{ section.id }} .ya2s__tg.is-active{ background:var(--dark); color:#fff;}
+  /* Cards grid */
+  #ya2s-{{ section.id }} .ya2s__cards{ display:grid; grid-template-columns:repeat({{ section.blocks.size }},1fr); gap:22px; text-align:left;}
+  @media(max-width:900px){ #ya2s-{{ section.id }} .ya2s__cards{ grid-template-columns:1fr;} }
+  #ya2s-{{ section.id }} .ya2s__card{ background:#fff; border:1.5px solid var(--line); border-radius:22px; padding:28px 26px; display:flex; flex-direction:column;}
+  #ya2s-{{ section.id }} .ya2s__card.is-hl{ border-color:var(--accent); box-shadow:0 0 0 3px {{ section.settings.accent }}22;}
+  #ya2s-{{ section.id }} .ya2s__head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;}
+  #ya2s-{{ section.id }} .ya2s__name{ font-size:19px; font-weight:800; color:var(--ink); text-transform:uppercase; letter-spacing:.01em;}
+  #ya2s-{{ section.id }} .ya2s__badge{ background:var(--accent); color:#053225; font-weight:800; font-size:10px; letter-spacing:.06em; text-transform:uppercase; padding:6px 11px; border-radius:999px; white-space:nowrap;}
+  #ya2s-{{ section.id }} .ya2s__desc{ color:var(--muted); font-size:14px; line-height:1.55; margin:0 0 18px;}
+  #ya2s-{{ section.id }} .ya2s__pricerow{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;}
+  #ya2s-{{ section.id }} .ya2s__price{ font-size:40px; font-weight:800; color:var(--ink); letter-spacing:-.02em;}
+  #ya2s-{{ section.id }} .ya2s__compare{ font-size:20px; font-weight:700; color:#b6bcc6; text-decoration:line-through;}
+  #ya2s-{{ section.id }} .ya2s__period{ color:var(--muted); font-size:13px; margin:4px 0 18px;}
+  #ya2s-{{ section.id }} .ya2s__feats{ list-style:none; margin:0 0 22px; padding:0; display:flex; flex-direction:column; gap:11px;}
+  #ya2s-{{ section.id }} .ya2s__feats li{ display:flex; align-items:center; gap:10px; font-size:14.5px; color:var(--ink);}
+  #ya2s-{{ section.id }} .ya2s__dot{ width:9px; height:9px; border-radius:50%; background:var(--accent); flex:none;}
+  #ya2s-{{ section.id }} .ya2s__cta{ display:block; text-align:center; text-decoration:none; font-weight:800; font-size:15px; padding:15px 18px; border-radius:14px; margin-top:auto;
+    background:#eef0f3; color:var(--ink); transition:.15s;}
+  #ya2s-{{ section.id }} .ya2s__cta.is-dark{ background:var(--dark); color:#fff;}
+  #ya2s-{{ section.id }} .ya2s__cta:hover{ opacity:.9;}
+  /* Timer */
+  #ya2s-{{ section.id }} .ya2s__timer{ margin-top:16px; border:1px dashed {{ section.settings.accent }}66; background:{{ section.settings.accent }}0f; border-radius:14px; padding:12px; text-align:center;}
+  #ya2s-{{ section.id }} .ya2s__promo{ font-size:12.5px; font-weight:800; color:#0a7a5a; text-transform:uppercase; letter-spacing:.03em; margin-bottom:8px;}
+  #ya2s-{{ section.id }} .ya2s__clock{ display:flex; justify-content:center; gap:8px;}
+  #ya2s-{{ section.id }} .ya2s__seg{ background:var(--dark); color:#fff; border-radius:9px; padding:6px 9px; min-width:44px; display:flex; flex-direction:column; align-items:center; line-height:1;}
+  #ya2s-{{ section.id }} .ya2s__seg b{ font-size:19px; font-weight:800;}
+  #ya2s-{{ section.id }} .ya2s__seg i{ font-style:normal; font-size:9px; opacity:.7; margin-top:2px; text-transform:uppercase;}
+  #ya2s-{{ section.id }} .ya2s__deadline{ font-size:11.5px; color:var(--muted); margin-top:8px;}
+  #ya2s-{{ section.id }} .ya2s__trust{ font-size:11px; color:var(--muted); text-align:center; margin-top:12px;}
+  /* Sélection au clic (mobile : une carte à la fois) */
+  @media(max-width:900px){
+    #ya2s-{{ section.id }} .ya2s__card{ display:none;}
+    #ya2s-{{ section.id }} .ya2s__card.is-shown{ display:flex;}
+  }
+</style>
+
+<script>
+(function(){
+  var root = document.getElementById('ya2s-{{ section.id }}');
+  if(!root) return;
+
+  /* Toggle : bouton actif + (mobile) affiche la carte correspondante + (desktop) surligne */
+  var tgs = root.querySelectorAll('.ya2s__tg');
+  var cards = root.querySelectorAll('.ya2s__card');
+  tgs.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      tgs.forEach(function(b){ b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      var id = btn.getAttribute('data-target');
+      cards.forEach(function(c){ c.classList.toggle('is-shown', c.id === id); });
+      var target = document.getElementById(id);
+      if(target && window.matchMedia('(min-width:901px)').matches){
+        target.animate([{transform:'scale(1.0)'},{transform:'scale(1.02)'},{transform:'scale(1.0)'}],{duration:280});
+      }
+    });
+  });
+
+  /* Compteur ROLLING : cycle de N heures qui se relance tout seul */
+  root.querySelectorAll('.ya2s__timer').forEach(function(t){
+    var cycleH = parseFloat(t.getAttribute('data-cycle')) || 48;
+    var CYCLE  = cycleH * 3600 * 1000;
+    var start  = new Date(new Date().getFullYear(), 0, 1).getTime(); // ancre : 1er janv.
+    function nextEnd(){
+      var now = Date.now();
+      var n = Math.ceil((now - start) / CYCLE);
+      var end = start + n * CYCLE;
+      if(end - now < 1000){ end += CYCLE; }
+      return end;
+    }
+    var end = nextEnd();
+    var hEl = t.querySelector('[data-h]'), mEl = t.querySelector('[data-m]'),
+        sEl = t.querySelector('[data-s]'), dEl = t.querySelector('[data-date]');
+    function pad(n){ return (n<10?'0':'')+n; }
+    function tick(){
+      var d = end - Date.now();
+      if(d <= 0){ end = nextEnd(); d = end - Date.now(); }   /* se remet à jour à la date limite */
+      hEl.textContent = pad(Math.floor(d/3600000));
+      mEl.textContent = pad(Math.floor(d%3600000/60000));
+      sEl.textContent = pad(Math.floor(d%60000/1000));
+      if(dEl){ dEl.textContent = new Date(end).toLocaleDateString('fr-FR',{day:'numeric',month:'long'}); }
+    }
+    tick(); setInterval(tick, 1000);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Offres — Pack Ultime",
+  "tag": "section",
+  "class": "section-offres-ultime",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Choisis ton offre" },
+    { "type": "textarea", "id": "subheading", "label": "Sous-titre", "default": "Choisis le guide qui correspond à ton objectif et commence à générer des résultats dès aujourd'hui !" },
+    { "type": "color", "id": "accent", "label": "Couleur d'accent", "default": "#12b886" },
+    { "type": "header", "content": "Compteur (promo)" },
+    { "type": "checkbox", "id": "show_timer", "label": "Afficher le compteur", "default": true },
+    { "type": "text", "id": "promo_text", "label": "Texte promo (modifiable)", "default": "Promo limitée — disponible 48 h" },
+    { "type": "range", "id": "cycle_hours", "min": 1, "max": 168, "step": 1, "unit": "h", "label": "Durée du cycle (rolling)", "default": 48 },
+    { "type": "text", "id": "date_prefix", "label": "Préfixe date", "default": "Jusqu'au" },
+    { "type": "header", "content": "Espacement" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Marge haut", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Marge bas", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "offre",
+      "name": "Offre",
+      "settings": [
+        { "type": "text", "id": "toggle_label", "label": "Libellé du bouton (toggle)", "default": "Fournisseur" },
+        { "type": "text", "id": "name", "label": "Nom de l'offre", "default": "Pack Fourni" },
+        { "type": "text", "id": "badge", "label": "Badge (laisser vide = aucun)", "default": "" },
+        { "type": "checkbox", "id": "highlight", "label": "Carte mise en avant (bordure accent)", "default": false },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Ce guide complet te donne accès à mon fournisseur 1.1 & authentique." },
+        { "type": "text", "id": "price", "label": "Prix", "default": "9,99€" },
+        { "type": "text", "id": "compare_price", "label": "Prix barré (comparaison)", "default": "" },
+        { "type": "text", "id": "period", "label": "Sous le prix", "default": "Paiement unique · Accès à vie" },
+        { "type": "text", "id": "feature_1", "label": "Point 1", "default": "Accès fournisseur" },
+        { "type": "text", "id": "feature_2", "label": "Point 2", "default": "Quelques stratégies" },
+        { "type": "text", "id": "feature_3", "label": "Point 3", "default": "1 PDF avec tout le contenu" },
+        { "type": "text", "id": "feature_4", "label": "Point 4", "default": "Plan de lancement" },
+        { "type": "text", "id": "feature_5", "label": "Point 5", "default": "" },
+        { "type": "text", "id": "feature_6", "label": "Point 6", "default": "" },
+        { "type": "text", "id": "cta_label", "label": "Texte du bouton", "default": "Acheter maintenant" },
+        { "type": "url", "id": "cta_url", "label": "Lien du bouton" },
+        { "type": "checkbox", "id": "dark_button", "label": "Bouton foncé (rempli)", "default": true },
+        { "type": "text", "id": "trust", "label": "Ligne de réassurance", "default": "✓ Paiement sécurisé   ✓ Livraison immédiate   ✓ Accès immédiat" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Offres — Pack Ultime",
+      "blocks": [
+        { "type": "offre", "settings": {
+          "toggle_label": "Fournisseur", "name": "Pack Fourni", "badge": "Le + choisis", "highlight": true,
+          "description": "Ce guide complet te donne accès à mon fournisseur 1.1 & authentique avec plusieurs étapes pour bien comprendre le fonctionnement du fournisseur et comment prendre contact.",
+          "price": "9,99€", "compare_price": "19,99€", "period": "Paiement unique · Accès à vie",
+          "feature_1": "Accès fournisseur", "feature_2": "Quelques stratégies", "feature_3": "1 PDF avec tout le contenu", "feature_4": "Plan de lancement",
+          "cta_label": "Acheter maintenant", "dark_button": true } },
+        { "type": "offre", "settings": {
+          "toggle_label": "E-book 1 à 10k/mois", "name": "Ebook 1 à 10k/mois", "badge": "", "highlight": false,
+          "description": "Booste ta visibilité sur les réseaux sociaux et apprends à générer tes premiers 10k/mois avec l'achat-revente. Passe un énorme cap avec ce guide complet.",
+          "price": "15,99€", "compare_price": "29,99€", "period": "Paiement unique · Accès à vie",
+          "feature_1": "Plan d'action 0 à 10k/mois", "feature_2": "Gestion financière", "feature_3": "Photos produits pro", "feature_4": "Communauté réseaux sociaux",
+          "cta_label": "Passer le cap", "dark_button": false } },
+        { "type": "offre", "settings": {
+          "toggle_label": "Pack Ultime", "name": "Pack Ultime", "badge": "Le + choisis", "highlight": true,
+          "description": "Le combo complet : fournisseur authentique + méthode 0 à 10k/mois. Tout ce qu'il te faut pour démarrer et scaler sans rien laisser au hasard.",
+          "price": "24,99€", "compare_price": "45,98€", "period": "Paiement unique · Accès à vie",
+          "feature_1": "Accès fournisseur 1.1", "feature_2": "Plan d'action 0 à 10k/mois", "feature_3": "Les 2 PDF complets", "feature_4": "Communauté + suivi",
+          "cta_label": "Je prends tout", "dark_button": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}
