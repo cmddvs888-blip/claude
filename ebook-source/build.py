@@ -937,14 +937,14 @@ page(
   eyebrow("Chapitre 10 · La checklist maîtresse") + hsec("Coche, et tu seras en ligne.") +
   '<div class="grid g2" style="gap:0 10mm;margin-top:2mm"><div>' +
   checklist([
-    ("① Fondations", ["Mon «&nbsp;pourquoi&nbsp;» écrit (intro)","Contrat 90 jours signé (ch.&nbsp;2)","Budget défini en 70/30 (ch.&nbsp;4)"]),
-    ("② Administratif", ["Sous-compte bancaire dédié ouvert","Statut adapté vérifié (micro-entrepreneur)"]),
+    ("<span class=gnum>1</span> Fondations", ["Mon «&nbsp;pourquoi&nbsp;» écrit (intro)","Contrat 90 jours signé (ch.&nbsp;2)","Budget défini en 70/30 (ch.&nbsp;4)"]),
+    ("<span class=gnum>2</span> Administratif", ["Sous-compte bancaire dédié ouvert","Statut adapté vérifié (micro-entrepreneur)"]),
   ]) +
   '</div><div>' +
   checklist([
-    ("③ Setup", ["Station photo installée (ch.&nbsp;5)","3 bacs en place","Cintres, enveloppes, défroisseur reçus"]),
-    ("④ Approvisionnement", ["Niche de départ choisie (ch.&nbsp;3)","Premier pack commandé sur cheapsappes.shop"]),
-    ("⑤ Outils", ["Profil Vinted complété (photo, bio, ville)","Modèle de description prêt · tableau de bord monté"]),
+    ("<span class=gnum>3</span> Setup", ["Station photo installée (ch.&nbsp;5)","3 bacs en place","Cintres, enveloppes, défroisseur reçus"]),
+    ("<span class=gnum>4</span> Approvisionnement", ["Niche de départ choisie (ch.&nbsp;3)","Premier pack commandé sur cheapsappes.shop"]),
+    ("<span class=gnum>5</span> Outils", ["Profil Vinted complété (photo, bio, ville)","Modèle de description prêt · tableau de bord monté"]),
   ]) +
   '</div></div>' +
   quote("Un objectif sans plan n’est qu’un souhait.","Antoine de Saint-Exupéry") +
