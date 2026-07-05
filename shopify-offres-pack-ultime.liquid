@@ -1,13 +1,11 @@
 {% comment %}
 ============================================================
   CHEAPSAPPES — Section "Offres Produits" (3 offres + compteur)
-  À coller dans : Boutique en ligne > Thèmes > (…) > Modifier le code
-  Crée le fichier : sections/offres-pack-ultime.liquid  → colle tout ceci.
-  Puis dans l'éditeur de thème : "Ajouter une section" > "Offres — Pack Ultime".
-  TOUT est modifiable dans l'éditeur (titres, prix, prix barré, points,
-  boutons, textes du compteur). Le compteur est un rolling 48 h qui se
-  relance tout seul et met à jour la date "jusqu'au …".
-  Astuce : duplique d'abord ton thème (sécurité) avant d'installer.
+  Fichier : sections/offres-pack-ultime.liquid
+  - Compteur : activable PAR CARTE (réglage "Compteur sur cette carte").
+  - Prix barré : par carte (laisser vide = pas de prix barré).
+  - Contour "mise en avant" : apparaît au défilement (scroll-reveal).
+  - Compteur rolling 48 h : se relance seul et met à jour la date "jusqu'au …".
 ============================================================
 {% endcomment %}
 
@@ -69,8 +67,8 @@
           {{ block.settings.cta_label }}
         </a>
 
-        {% comment %} ---- Compteur (remplace les blocs "invisibles") ---- {% endcomment %}
-        {% if section.settings.show_timer %}
+        {% comment %} ---- Compteur : uniquement si activé sur CETTE carte ---- {% endcomment %}
+        {% if block.settings.timer_on %}
           <div class="ya2s__timer" data-cycle="{{ section.settings.cycle_hours }}">
             {% if section.settings.promo_text != blank %}
               <div class="ya2s__promo">{{ section.settings.promo_text }}</div>
@@ -106,8 +104,10 @@
   /* Cards grid */
   #ya2s-{{ section.id }} .ya2s__cards{ display:grid; grid-template-columns:repeat({{ section.blocks.size }},1fr); gap:22px; text-align:left;}
   @media(max-width:900px){ #ya2s-{{ section.id }} .ya2s__cards{ grid-template-columns:1fr;} }
-  #ya2s-{{ section.id }} .ya2s__card{ background:#fff; border:1.5px solid var(--line); border-radius:22px; padding:28px 26px; display:flex; flex-direction:column;}
-  #ya2s-{{ section.id }} .ya2s__card.is-hl{ border-color:var(--accent); box-shadow:0 0 0 3px {{ section.settings.accent }}22;}
+  #ya2s-{{ section.id }} .ya2s__card{ background:#fff; border:1.5px solid var(--line); border-radius:22px; padding:28px 26px; display:flex; flex-direction:column;
+    transition:border-color .55s ease, box-shadow .55s ease, transform .55s ease;}
+  /* Contour "mise en avant" : masqué au départ, apparaît au défilement (.in-view) */
+  #ya2s-{{ section.id }} .ya2s__card.is-hl.in-view{ border-color:var(--accent); box-shadow:0 0 0 3px {{ section.settings.accent }}2b; transform:translateY(-2px);}
   #ya2s-{{ section.id }} .ya2s__head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;}
   #ya2s-{{ section.id }} .ya2s__name{ font-size:19px; font-weight:800; color:var(--ink); text-transform:uppercase; letter-spacing:.01em;}
   #ya2s-{{ section.id }} .ya2s__badge{ background:var(--accent); color:#053225; font-weight:800; font-size:10px; letter-spacing:.06em; text-transform:uppercase; padding:6px 11px; border-radius:999px; white-space:nowrap;}
@@ -144,7 +144,7 @@
   var root = document.getElementById('ya2s-{{ section.id }}');
   if(!root) return;
 
-  /* Toggle : bouton actif + (mobile) affiche la carte correspondante + (desktop) surligne */
+  /* Toggle */
   var tgs = root.querySelectorAll('.ya2s__tg');
   var cards = root.querySelectorAll('.ya2s__card');
   tgs.forEach(function(btn){
@@ -160,11 +160,24 @@
     });
   });
 
+  /* Contour au défilement : révèle la bordure quand la carte entre à l'écran */
+  var hl = root.querySelectorAll('.ya2s__card.is-hl');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.35 });
+    hl.forEach(function(c){ io.observe(c); });
+  } else {
+    hl.forEach(function(c){ c.classList.add('in-view'); });
+  }
+
   /* Compteur ROLLING : cycle de N heures qui se relance tout seul */
   root.querySelectorAll('.ya2s__timer').forEach(function(t){
     var cycleH = parseFloat(t.getAttribute('data-cycle')) || 48;
     var CYCLE  = cycleH * 3600 * 1000;
-    var start  = new Date(new Date().getFullYear(), 0, 1).getTime(); // ancre : 1er janv.
+    var start  = new Date(new Date().getFullYear(), 0, 1).getTime();
     function nextEnd(){
       var now = Date.now();
       var n = Math.ceil((now - start) / CYCLE);
@@ -178,7 +191,7 @@
     function pad(n){ return (n<10?'0':'')+n; }
     function tick(){
       var d = end - Date.now();
-      if(d <= 0){ end = nextEnd(); d = end - Date.now(); }   /* se remet à jour à la date limite */
+      if(d <= 0){ end = nextEnd(); d = end - Date.now(); }
       hEl.textContent = pad(Math.floor(d/3600000));
       mEl.textContent = pad(Math.floor(d%3600000/60000));
       sEl.textContent = pad(Math.floor(d%60000/1000));
@@ -198,9 +211,9 @@
     { "type": "text", "id": "heading", "label": "Titre", "default": "Choisis ton offre" },
     { "type": "textarea", "id": "subheading", "label": "Sous-titre", "default": "Choisis le guide qui correspond à ton objectif et commence à générer des résultats dès aujourd'hui !" },
     { "type": "color", "id": "accent", "label": "Couleur d'accent", "default": "#12b886" },
-    { "type": "header", "content": "Compteur (promo)" },
-    { "type": "checkbox", "id": "show_timer", "label": "Afficher le compteur", "default": true },
-    { "type": "text", "id": "promo_text", "label": "Texte promo (modifiable)", "default": "Promo limitée — disponible 48 h" },
+    { "type": "header", "content": "Compteur (réglages partagés)" },
+    { "type": "paragraph", "content": "Active le compteur carte par carte via le réglage « Compteur sur cette carte » du bloc." },
+    { "type": "text", "id": "promo_text", "label": "Texte promo", "default": "Promo limitée — disponible 48 h" },
     { "type": "range", "id": "cycle_hours", "min": 1, "max": 168, "step": 1, "unit": "h", "label": "Durée du cycle (rolling)", "default": 48 },
     { "type": "text", "id": "date_prefix", "label": "Préfixe date", "default": "Jusqu'au" },
     { "type": "header", "content": "Espacement" },
@@ -215,10 +228,11 @@
         { "type": "text", "id": "toggle_label", "label": "Libellé du bouton (toggle)", "default": "Fournisseur" },
         { "type": "text", "id": "name", "label": "Nom de l'offre", "default": "Pack Fourni" },
         { "type": "text", "id": "badge", "label": "Badge (laisser vide = aucun)", "default": "" },
-        { "type": "checkbox", "id": "highlight", "label": "Carte mise en avant (bordure accent)", "default": false },
+        { "type": "checkbox", "id": "highlight", "label": "Carte mise en avant (contour au défilement)", "default": false },
+        { "type": "checkbox", "id": "timer_on", "label": "Compteur sur cette carte", "default": false },
         { "type": "textarea", "id": "description", "label": "Description", "default": "Ce guide complet te donne accès à mon fournisseur 1.1 & authentique." },
         { "type": "text", "id": "price", "label": "Prix", "default": "9,99€" },
-        { "type": "text", "id": "compare_price", "label": "Prix barré (comparaison)", "default": "" },
+        { "type": "text", "id": "compare_price", "label": "Prix barré (laisser vide = aucun)", "default": "" },
         { "type": "text", "id": "period", "label": "Sous le prix", "default": "Paiement unique · Accès à vie" },
         { "type": "text", "id": "feature_1", "label": "Point 1", "default": "Accès fournisseur" },
         { "type": "text", "id": "feature_2", "label": "Point 2", "default": "Quelques stratégies" },
@@ -239,19 +253,19 @@
       "name": "Offres — Pack Ultime",
       "blocks": [
         { "type": "offre", "settings": {
-          "toggle_label": "Fournisseur", "name": "Pack Fourni", "badge": "Le + choisis", "highlight": true,
+          "toggle_label": "Fournisseur", "name": "Pack Fourni", "badge": "", "highlight": false, "timer_on": false,
           "description": "Ce guide complet te donne accès à mon fournisseur 1.1 & authentique avec plusieurs étapes pour bien comprendre le fonctionnement du fournisseur et comment prendre contact.",
-          "price": "9,99€", "compare_price": "19,99€", "period": "Paiement unique · Accès à vie",
+          "price": "9,99€", "compare_price": "", "period": "Paiement unique · Accès à vie",
           "feature_1": "Accès fournisseur", "feature_2": "Quelques stratégies", "feature_3": "1 PDF avec tout le contenu", "feature_4": "Plan de lancement",
           "cta_label": "Acheter maintenant", "dark_button": true } },
         { "type": "offre", "settings": {
-          "toggle_label": "E-book 1 à 10k/mois", "name": "Ebook 1 à 10k/mois", "badge": "", "highlight": false,
+          "toggle_label": "E-book 1 à 10k/mois", "name": "Ebook 1 à 10k/mois", "badge": "", "highlight": false, "timer_on": false,
           "description": "Booste ta visibilité sur les réseaux sociaux et apprends à générer tes premiers 10k/mois avec l'achat-revente. Passe un énorme cap avec ce guide complet.",
-          "price": "15,99€", "compare_price": "29,99€", "period": "Paiement unique · Accès à vie",
+          "price": "15,99€", "compare_price": "", "period": "Paiement unique · Accès à vie",
           "feature_1": "Plan d'action 0 à 10k/mois", "feature_2": "Gestion financière", "feature_3": "Photos produits pro", "feature_4": "Communauté réseaux sociaux",
           "cta_label": "Passer le cap", "dark_button": false } },
         { "type": "offre", "settings": {
-          "toggle_label": "Pack Ultime", "name": "Pack Ultime", "badge": "Le + choisis", "highlight": true,
+          "toggle_label": "Pack Ultime", "name": "Pack Ultime", "badge": "Le + choisis", "highlight": true, "timer_on": true,
           "description": "Le combo complet : fournisseur authentique + méthode 0 à 10k/mois. Tout ce qu'il te faut pour démarrer et scaler sans rien laisser au hasard.",
           "price": "24,99€", "compare_price": "45,98€", "period": "Paiement unique · Accès à vie",
           "feature_1": "Accès fournisseur 1.1", "feature_2": "Plan d'action 0 à 10k/mois", "feature_3": "Les 2 PDF complets", "feature_4": "Communauté + suivi",
