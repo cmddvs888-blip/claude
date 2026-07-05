@@ -335,5 +335,29 @@ ul.ticks li:before{content:'→';position:absolute;left:0;color:var(--blue);font
 
 /* ---------- Surlignage de mots-clés ---------- */
 .hl{font-weight:700;color:var(--blue-2)}
-.hlx{font-weight:700;color:var(--navy);background:linear-gradient(transparent 58%, rgba(15,181,176,.32) 58%);padding:0 .5mm;border-radius:1mm}
+.hlx{font-weight:700;color:var(--blue-2);font-size:1.075em;letter-spacing:-.01em}
 .hly{font-weight:700;color:var(--navy);background:linear-gradient(transparent 58%, rgba(231,185,75,.42) 58%);padding:0 .5mm}
+
+/* ---------- Entonnoir de prix ---------- */
+.fun{background:#fff;border:1px solid var(--line-2);border-radius:4.5mm;padding:5mm 5mm 5.5mm;margin:4mm 0;box-shadow:0 12px 28px rgba(11,40,110,.10);break-inside:avoid}
+.fun-t{font-family:'Plex';font-weight:700;font-size:8.4pt;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-2);margin-bottom:4mm;text-align:center}
+.fun-b{display:flex;justify-content:space-between;align-items:center;gap:4mm;margin:0 auto 2.4mm;padding:3mm 5mm;border-radius:2.6mm;font-size:10.6pt;color:var(--navy);background:var(--sky);border:1px solid var(--sky-2)}
+.fun-b span{font-weight:600}.fun-b b{font-family:'Plex';font-weight:700;white-space:nowrap}
+.fun-b.brand{background:linear-gradient(120deg,#1B63F0,#2f7bff);color:#fff;border:none}
+.fun-b.brand b{color:#fff}
+.fun-b.win{background:linear-gradient(120deg,#0FB5B0,#12c8b6);color:#03302f;border:none;box-shadow:0 8px 18px rgba(15,181,176,.35)}
+.fun-b.win span{font-weight:700}.fun-b.win b{color:#03302f;font-size:12.5pt}
+
+/* ---------- Diagramme réinvestissement 70/30 ---------- */
+.reinv{background:#fff;border:1px solid var(--line-2);border-radius:4.5mm;padding:5mm;margin:4mm 0;box-shadow:0 12px 28px rgba(11,40,110,.10);break-inside:avoid}
+.reinv-t{font-family:'Plex';font-weight:700;font-size:8.4pt;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-2);margin-bottom:4mm;text-align:center}
+.reinv-bar{display:flex;gap:2.5mm;height:24mm}
+.rseg{border-radius:3mm;padding:4mm;display:flex;flex-direction:column;justify-content:center;color:#fff}
+.r70{flex:70;background:linear-gradient(135deg,#0FB5B0,#0A8F8B)}
+.r30{flex:30;background:linear-gradient(135deg,#1B63F0,#0B44C0)}
+.rp{font-family:'Bricolage';font-weight:700;font-size:22pt;line-height:1}
+.rl{font-weight:700;font-size:10pt;margin-top:1.5mm;line-height:1.2}
+.rl span{display:block;font-weight:400;font-size:8.6pt;opacity:.85}
+.reinv-cyc{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:2mm;margin-top:4mm;font-size:9.4pt;font-weight:700;color:var(--navy)}
+.reinv-cyc .ic{width:1.1em;height:1.1em;vertical-align:-.2em;color:var(--blue)}
+.reinv-cyc span{color:var(--blue);font-weight:700;margin:0 .5mm}

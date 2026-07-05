@@ -92,6 +92,24 @@ def process(title, steps):
     out.append('</div></div>')
     return "".join(out)
 
+def funnel(title, rows):
+    """Entonnoir de prix : bandes décroissantes (label + valeur)."""
+    out=[f'<div class="fun"><div class="fun-t">{title}</div>']
+    for label,val,w,kind in rows:
+        out.append(f'<div class="fun-b {kind}" style="width:{w}%"><span>{label}</span><b>{val}</b></div>')
+    out.append('</div>')
+    return "".join(out)
+
+def reinvest():
+    """Diagramme de la règle 70/30."""
+    return ('<div class="reinv"><div class="reinv-t">La règle 70/30 — sur chaque marge encaissée</div>'
+            '<div class="reinv-bar">'
+            '<div class="rseg r70"><div class="rp">70%</div><div class="rl">Réinvesti en stock<span>ta croissance</span></div></div>'
+            '<div class="rseg r30"><div class="rp">30%</div><div class="rl">Pour toi<span>ta récompense</span></div></div>'
+            '</div>'
+            '<div class="reinv-cyc">@@IC:euro@@ Vente <span>→</span> @@IC:refresh@@ 70&nbsp;% réassort <span>→</span> '
+            '@@IC:trend@@ plus de stock <span>→</span> @@IC:euro@@ plus de ventes</div></div>')
+
 def kpis(items):
     out=['<div class="kpis">']
     for n,l,teal in items:
@@ -536,6 +554,7 @@ page(
      ["M5","~60 pièces","40","<span class='num'>~440&nbsp;€</span>","70&nbsp;% réinvesti"],
      ["M6","~75 pièces","50","<span class='num pos'>~550&nbsp;€</span>","tu te verses un revenu"]]) +
   flow([("@@IC:euro@@","Capital","tu investis"),("@@IC:shirt@@","Stock","tu sources"),("@@IC:camera@@","Annonces","tu publies"),("@@IC:check@@","Ventes","tu encaisses"),("@@IC:refresh@@","Réassort","tu amplifies")]) +
+  reinvest() +
   box("tip",
     '<p>Applique la règle <span class=hlx>70/30</span> dès le mois 3&nbsp;: 70&nbsp;% de ta marge repart en stock (ta croissance), 30&nbsp;% pour toi (ta récompense). Tu grandis <em>et</em> tu profites — c\'est ce qui rend le jeu tenable sur la durée.</p>') +
   foot()
@@ -667,6 +686,13 @@ page(
      ["Beaucoup de favoris, pas d'achat","Prix presque bon, hésitation","Envoie une offre privée aux favoris (-10&nbsp;%)"],
      ["Peu de vues après 72&nbsp;h","Problème de visibilité","Réédite l'annonce / envisage un boost ciblé"],
      ["Vente en < 24&nbsp;h","Prix (peut-être) trop bas","Monte légèrement le prix des pièces similaires"]]) +
+  funnel("D'où vient ta marge&nbsp;?", [
+    ("Prix boutique neuf","~80&nbsp;€","100",""),
+    ("Prix marché seconde main","~30&nbsp;€","82",""),
+    ("Ton prix de vente","24&nbsp;€","64","brand"),
+    ("− Prix de revient (via agent)","8,50&nbsp;€","48",""),
+    ("= Ta marge nette","+15,50&nbsp;€","48","win"),
+  ]) +
   hsub("Hashtags &amp; mots-clés") +
   '<p>Pense comme l\'acheteur qui <em>tape</em> sa recherche&nbsp;: <span class="pill">#nike</span> <span class="pill">#vintage</span> <span class="pill">#sweat</span> <span class="pill">#streetwear</span> <span class="pill">#tailleM</span>. Marque + style + type + taille. Pas de hashtags fourre-tout&nbsp;: ils diluent ta pertinence.</p>' +
   foot()
