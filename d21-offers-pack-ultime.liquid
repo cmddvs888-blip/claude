@@ -3,8 +3,9 @@
 .d21-offers__header { text-align: center; margin-bottom: 36px; }
 .d21-offers__title { font-size: clamp(24px,4vw,36px); font-weight: 800; margin-bottom: 10px; }
 .d21-offers__sub { font-size: 14px; color: #666; max-width: 520px; margin: 0 auto; line-height: 1.7; }
-.d21-offers__tabs { display: flex; gap: 0; justify-content: center; margin-bottom: 32px; background: #e4e4e4; border-radius: 50px; width: fit-content; margin-left: auto; margin-right: auto; padding: 4px; flex-wrap: wrap; }
-.d21-tab-btn { padding: 10px 24px; border-radius: 50px; border: none; background: transparent; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s, color 0.2s; color: #888; text-transform: uppercase; font-family: inherit; }
+/* Boutons du haut : pills séparées, côte à côte avec un petit espace */
+.d21-offers__tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+.d21-tab-btn { padding: 10px 22px; border-radius: 50px; border: none; background: #e4e4e4; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; transition: background 0.2s, color 0.2s; color: #777; text-transform: uppercase; font-family: inherit; }
 .d21-tab-btn.active { background: #1a1a1a; color: #fff; }
 .d21-offers__grid { display: flex; gap: 24px; max-width: 1080px; margin: 0 auto; align-items: flex-start; }
 .d21-card { flex: 1; background: #fff; border-radius: 20px; padding: 28px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 2px solid transparent; transition: border-color 0.45s ease, box-shadow 0.45s ease, transform 0.45s ease; }
@@ -50,11 +51,36 @@
     <p class="d21-offers__sub">{{ section.settings.subtitle }}</p>
   </div>
   <div class="d21-offers__tabs">
-    <button class="d21-tab-btn active" data-tab="1" onclick="d21SwitchTab(1, this)">{{ section.settings.tab1_name | default: 'GUIDE A-R' }}</button>
+    <button class="d21-tab-btn active" data-tab="3" onclick="d21SwitchTab(3, this)">{{ section.settings.tab3_name | default: 'PACK ULTIME' }}</button>
+    <button class="d21-tab-btn" data-tab="1" onclick="d21SwitchTab(1, this)">{{ section.settings.tab1_name | default: 'GUIDE A-R' }}</button>
     <button class="d21-tab-btn" data-tab="2" onclick="d21SwitchTab(2, this)">{{ section.settings.tab2_name | default: 'MARKETING & ASTUCES' }}</button>
-    <button class="d21-tab-btn" data-tab="3" onclick="d21SwitchTab(3, this)">{{ section.settings.tab3_name | default: 'PACK ULTIME' }}</button>
   </div>
   <div class="d21-offers__grid">
+    <div class="d21-card d21-card--featured d21-card--tab3 d21-card--visible">
+      <div class="d21-card__top">
+        <div class="d21-card__name">{{ section.settings.card3_name | default: 'PACK ULTIME' }}</div>
+        {% if section.settings.card3_badge != blank %}<div class="d21-card__badge">{{ section.settings.card3_badge }}</div>{% endif %}
+      </div>
+      <p class="d21-card__desc">{{ section.settings.card3_desc }}</p>
+      <div class="d21-card__price">{% if section.settings.card3_compare != blank %}<span class="d21-card__compare">{{ section.settings.card3_compare }}<sup>€</sup></span>{% endif %}{{ section.settings.card3_price | default: '24,99' }}<sup>€</sup></div>
+      <p class="d21-card__price-label">{{ section.settings.card3_price_label | default: 'Paiement unique • Accès à vie' }}</p>
+      <ul class="d21-card__features">
+        {% assign feats3 = section.settings.card3_features | split: "|" %}
+        {% for feat in feats3 %}<li><span class="d21-card__dot"></span>{{ feat | strip }}</li>{% endfor %}
+      </ul>
+      <button class="d21-card__buy d21-card__buy--dark d21-buy-btn" data-variant-id="{{ section.settings.card3_variant_id }}">{{ section.settings.card3_cta | default: 'Je prends tout' }}</button>
+      {% comment %} Compteur rolling à la place des petits blocs — carte Pack Ultime uniquement {% endcomment %}
+      <div class="d21-timer" data-cycle="{{ section.settings.cycle_hours | default: 48 }}">
+        {% if section.settings.promo_text != blank %}<div class="d21-timer__promo">{{ section.settings.promo_text }}</div>{% endif %}
+        <div class="d21-timer__clock" aria-live="polite">
+          <span class="d21-timer__seg"><b data-h>00</b><i>h</i></span>
+          <span class="d21-timer__seg"><b data-m>00</b><i>min</i></span>
+          <span class="d21-timer__seg"><b data-s>00</b><i>s</i></span>
+        </div>
+        <div class="d21-timer__deadline">{{ section.settings.date_prefix | default: "Jusqu'au" }} <span data-date></span></div>
+      </div>
+      <div class="d21-card__trust"><span class="d21-card__trust-item">Paiement sécurisé</span><span class="d21-card__trust-item">Livraison immédiate</span><span class="d21-card__trust-item">Accès immédiat</span></div>
+    </div>
     <div class="d21-card d21-card--tab1 d21-card--visible">
       <div class="d21-card__top">
         <div class="d21-card__name">{{ section.settings.card1_name | default: 'GUIDE A-R' }}</div>
@@ -84,31 +110,6 @@
       </ul>
       <button class="d21-card__buy d21-card__buy--outline d21-buy-btn" data-variant-id="{{ section.settings.card2_variant_id }}" {% if section.settings.card2_disabled %}disabled aria-disabled="true"{% endif %}>{% if section.settings.card2_disabled %}{{ section.settings.card2_disabled_text | default: 'Bientôt disponible' }}{% else %}{{ section.settings.card2_cta | default: 'Acheter maintenant' }}{% endif %}</button>
       <div class="d21-card__pay-icons"><div class="d21-card__pay-icon"></div><div class="d21-card__pay-icon"></div><div class="d21-card__pay-icon"></div><div class="d21-card__pay-icon"></div></div>
-      <div class="d21-card__trust"><span class="d21-card__trust-item">Paiement sécurisé</span><span class="d21-card__trust-item">Livraison immédiate</span><span class="d21-card__trust-item">Accès immédiat</span></div>
-    </div>
-    <div class="d21-card d21-card--featured d21-card--tab3 d21-card--visible">
-      <div class="d21-card__top">
-        <div class="d21-card__name">{{ section.settings.card3_name | default: 'PACK ULTIME' }}</div>
-        {% if section.settings.card3_badge != blank %}<div class="d21-card__badge">{{ section.settings.card3_badge }}</div>{% endif %}
-      </div>
-      <p class="d21-card__desc">{{ section.settings.card3_desc }}</p>
-      <div class="d21-card__price">{% if section.settings.card3_compare != blank %}<span class="d21-card__compare">{{ section.settings.card3_compare }}<sup>€</sup></span>{% endif %}{{ section.settings.card3_price | default: '24,99' }}<sup>€</sup></div>
-      <p class="d21-card__price-label">{{ section.settings.card3_price_label | default: 'Paiement unique • Accès à vie' }}</p>
-      <ul class="d21-card__features">
-        {% assign feats3 = section.settings.card3_features | split: "|" %}
-        {% for feat in feats3 %}<li><span class="d21-card__dot"></span>{{ feat | strip }}</li>{% endfor %}
-      </ul>
-      <button class="d21-card__buy d21-card__buy--dark d21-buy-btn" data-variant-id="{{ section.settings.card3_variant_id }}">{{ section.settings.card3_cta | default: 'Je prends tout' }}</button>
-      {% comment %} Compteur rolling à la place des petits blocs — carte Pack Ultime uniquement {% endcomment %}
-      <div class="d21-timer" data-cycle="{{ section.settings.cycle_hours | default: 48 }}">
-        {% if section.settings.promo_text != blank %}<div class="d21-timer__promo">{{ section.settings.promo_text }}</div>{% endif %}
-        <div class="d21-timer__clock" aria-live="polite">
-          <span class="d21-timer__seg"><b data-h>00</b><i>h</i></span>
-          <span class="d21-timer__seg"><b data-m>00</b><i>min</i></span>
-          <span class="d21-timer__seg"><b data-s>00</b><i>s</i></span>
-        </div>
-        <div class="d21-timer__deadline">{{ section.settings.date_prefix | default: "Jusqu'au" }} <span data-date></span></div>
-      </div>
       <div class="d21-card__trust"><span class="d21-card__trust-item">Paiement sécurisé</span><span class="d21-card__trust-item">Livraison immédiate</span><span class="d21-card__trust-item">Accès immédiat</span></div>
     </div>
   </div>
@@ -186,34 +187,16 @@ function d21SwitchTab(tab, btn) {
     { "type": "color", "id": "accent_color", "label": "Couleur accent", "default": "#10B981" },
     { "type": "text", "id": "title", "label": "Titre section", "default": "Choisis ton offre" },
     { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Choisis le guide qui correspond à ton objectif !" },
-    { "type": "text", "id": "tab1_name", "label": "Nom onglet 1", "default": "GUIDE A-R" },
-    { "type": "text", "id": "tab2_name", "label": "Nom onglet 2", "default": "MARKETING & ASTUCES" },
-    { "type": "text", "id": "tab3_name", "label": "Nom onglet 3", "default": "PACK ULTIME" },
+    { "type": "header", "content": "Boutons du haut (ordre : Pack Ultime · Fournisseur · Ebook)" },
+    { "type": "text", "id": "tab3_name", "label": "Bouton 1 (Pack Ultime)", "default": "PACK ULTIME" },
+    { "type": "text", "id": "tab1_name", "label": "Bouton 2 (Fournisseur)", "default": "GUIDE A-R" },
+    { "type": "text", "id": "tab2_name", "label": "Bouton 3 (Ebook)", "default": "MARKETING & ASTUCES" },
     { "type": "header", "content": "Compteur (carte Pack Ultime)" },
     { "type": "paragraph", "content": "Compteur rolling qui se relance tout seul et met à jour la date automatiquement. Il s'affiche uniquement sur la carte Pack Ultime." },
     { "type": "text", "id": "promo_text", "label": "Texte promo", "default": "Promo limitée — disponible 48H" },
     { "type": "range", "id": "cycle_hours", "min": 6, "max": 168, "step": 6, "unit": "h", "label": "Durée du cycle (rolling)", "default": 48 },
     { "type": "text", "id": "date_prefix", "label": "Préfixe date", "default": "Jusqu'au" },
-    { "type": "header", "content": "Carte 1 (Principale)" },
-    { "type": "text", "id": "card1_variant_id", "label": "ID Variant Shopify" },
-    { "type": "text", "id": "card1_name", "label": "Nom", "default": "GUIDE A-R" },
-    { "type": "text", "id": "card1_badge", "label": "Badge", "default": "POPULAIRE" },
-    { "type": "textarea", "id": "card1_desc", "label": "Description", "default": "Guide complet avec accès fournisseur et stratégies testées." },
-    { "type": "text", "id": "card1_price", "label": "Prix", "default": "169,99" },
-    { "type": "text", "id": "card1_price_label", "label": "Label prix", "default": "Paiement unique • Accès à vie" },
-    { "type": "textarea", "id": "card1_features", "label": "Features (séparées par |)", "default": "Accès fournisseur | Marges et pricing | 2 stratégies bonus | Plan de lancement" },
-    { "type": "text", "id": "card1_cta", "label": "Texte bouton", "default": "Acheter maintenant" },
-    { "type": "header", "content": "Carte 2" },
-    { "type": "checkbox", "id": "card2_disabled", "label": "⚠️ Désactiver le bouton (non cliquable)", "default": true, "info": "Coché = bouton non cliquable. Décoche dès que tu veux activer la vente." },
-    { "type": "text", "id": "card2_disabled_text", "label": "Texte bouton désactivé", "default": "Bientôt disponible" },
-    { "type": "text", "id": "card2_variant_id", "label": "ID Variant Shopify" },
-    { "type": "text", "id": "card2_name", "label": "Nom", "default": "MARKETING & ASTUCES" },
-    { "type": "textarea", "id": "card2_desc", "label": "Description", "default": "Booste ta visibilité sur les réseaux sociaux." },
-    { "type": "text", "id": "card2_price", "label": "Prix", "default": "79,99" },
-    { "type": "text", "id": "card2_price_label", "label": "Label prix", "default": "Paiement unique • Accès à vie" },
-    { "type": "textarea", "id": "card2_features", "label": "Features (séparées par |)", "default": "Règles Vinted | Gestion financière | Photos produits pro | Communauté" },
-    { "type": "text", "id": "card2_cta", "label": "Texte bouton (quand activé)", "default": "Acheter maintenant" },
-    { "type": "header", "content": "Carte 3 — Pack Ultime (mise en avant + compteur)" },
+    { "type": "header", "content": "Carte 1 — Pack Ultime (mise en avant + compteur)" },
     { "type": "paragraph", "content": "Carte mise en avant : contour qui apparaît au défilement, prix barré et compteur intégrés." },
     { "type": "text", "id": "card3_variant_id", "label": "ID Variant Shopify" },
     { "type": "text", "id": "card3_name", "label": "Nom", "default": "PACK ULTIME" },
@@ -223,7 +206,26 @@ function d21SwitchTab(tab, btn) {
     { "type": "text", "id": "card3_price", "label": "Prix", "default": "24,99" },
     { "type": "text", "id": "card3_price_label", "label": "Label prix", "default": "Paiement unique • Accès à vie" },
     { "type": "textarea", "id": "card3_features", "label": "Features (séparées par |)", "default": "Accès fournisseur 1.1 | Plan 0 à 10k/mois | Les 2 PDF complets | Communauté + suivi" },
-    { "type": "text", "id": "card3_cta", "label": "Texte bouton", "default": "Je prends tout" }
+    { "type": "text", "id": "card3_cta", "label": "Texte bouton", "default": "Je prends tout" },
+    { "type": "header", "content": "Carte 2 — Fournisseur" },
+    { "type": "text", "id": "card1_variant_id", "label": "ID Variant Shopify" },
+    { "type": "text", "id": "card1_name", "label": "Nom", "default": "GUIDE A-R" },
+    { "type": "text", "id": "card1_badge", "label": "Badge", "default": "POPULAIRE" },
+    { "type": "textarea", "id": "card1_desc", "label": "Description", "default": "Guide complet avec accès fournisseur et stratégies testées." },
+    { "type": "text", "id": "card1_price", "label": "Prix", "default": "169,99" },
+    { "type": "text", "id": "card1_price_label", "label": "Label prix", "default": "Paiement unique • Accès à vie" },
+    { "type": "textarea", "id": "card1_features", "label": "Features (séparées par |)", "default": "Accès fournisseur | Marges et pricing | 2 stratégies bonus | Plan de lancement" },
+    { "type": "text", "id": "card1_cta", "label": "Texte bouton", "default": "Acheter maintenant" },
+    { "type": "header", "content": "Carte 3 — Ebook" },
+    { "type": "checkbox", "id": "card2_disabled", "label": "⚠️ Désactiver le bouton (non cliquable)", "default": true, "info": "Coché = bouton non cliquable. Décoche dès que tu veux activer la vente." },
+    { "type": "text", "id": "card2_disabled_text", "label": "Texte bouton désactivé", "default": "Bientôt disponible" },
+    { "type": "text", "id": "card2_variant_id", "label": "ID Variant Shopify" },
+    { "type": "text", "id": "card2_name", "label": "Nom", "default": "MARKETING & ASTUCES" },
+    { "type": "textarea", "id": "card2_desc", "label": "Description", "default": "Booste ta visibilité sur les réseaux sociaux." },
+    { "type": "text", "id": "card2_price", "label": "Prix", "default": "79,99" },
+    { "type": "text", "id": "card2_price_label", "label": "Label prix", "default": "Paiement unique • Accès à vie" },
+    { "type": "textarea", "id": "card2_features", "label": "Features (séparées par |)", "default": "Règles Vinted | Gestion financière | Photos produits pro | Communauté" },
+    { "type": "text", "id": "card2_cta", "label": "Texte bouton (quand activé)", "default": "Acheter maintenant" }
   ],
   "presets": [{ "name": "Offres Produits" }]
 }
