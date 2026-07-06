@@ -1,0 +1,251 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "layout": "d21",
+  "sections": {
+    "hero": {
+      "type": "d21-hero",
+      "blocks": {
+        "s1": {
+          "type": "social",
+          "settings": {
+            "platform": "instagram",
+            "link": "https://www.instagram.com/cheapsappes",
+            "style": "light"
+          }
+        },
+        "s2": {
+          "type": "social",
+          "settings": {
+            "platform": "tiktok",
+            "link": "https://www.tiktok.com/@cheapsappes",
+            "style": "light"
+          }
+        },
+        "l1": {
+          "type": "plogo",
+          "settings": {
+            "platform": "vinted"
+          }
+        },
+        "l2": {
+          "type": "plogo",
+          "settings": {
+            "platform": "tiktok"
+          }
+        },
+        "l3": {
+          "type": "plogo",
+          "settings": {
+            "platform": "instagram"
+          }
+        },
+        "p1": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/IMG_1150.jpg"
+          }
+        },
+        "p2": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/image.jpg"
+          }
+        },
+        "p3": {
+          "type": "photo",
+          "settings": {
+            "image": "shopify://shop_images/8D0BF4C8-D941-4C7A-AEF6-657BDDAFA175.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "l1",
+        "l2",
+        "l3",
+        "p1",
+        "p2",
+        "p3"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/07c3cbda-4bee-40bb-a1da-c426ef6240a3-Photoroom.png",
+        "logo_text": "D21",
+        "title_line1": "LE FOURNISSEUR",
+        "title_accent": "ACHAT-REVENTE",
+        "title_line2": "LE PLUS RENTABLE POUR ATTEINDRE 10K/MOIS DÈS MAINTENANT !",
+        "subtitle": "Depuis plus de 2 ans, je travaille avec le même fournisseur. Aujourd'hui, je te donne accès à ses contacts, pour que toi aussi tu puisse générer tes premier 10 000€ par mois depuis chez toi peut importe ton age.",
+        "badge_text": "Livraison immédiate par mail",
+        "cta_text": "Découvrir les offres",
+        "cta_link": "#offres",
+        "bg_color": "#f2f2f2",
+        "accent_color": "#10b981",
+        "cta_color": "#1a1a1a"
+      }
+    },
+    "stats": {
+      "type": "d21-stats",
+      "settings": {
+        "bg_color": "#f2f2f2",
+        "accent_color": "#10b981",
+        "title": "Des résultats concrets",
+        "subtitle": "Voici ce que l'achat-revente peut générer avec les bonnes méthodes.",
+        "stat1_value": "+10K€",
+        "stat1_desc": "Aujourd'hui, cette activité me permet de générer plus de 10 000 € par mois",
+        "stat2_value": "14 ans",
+        "stat2_desc": "J'ai commencé à 14 ans, peut importe l'âge que tu as , ça ne sera pas un frein.",
+        "stat3_value": "+3K",
+        "stat3_desc": "Plus de 3000 vêtements vendus, portés aujourd'hui, par des clients satisfaits"
+      }
+    },
+    "offers": {
+      "type": "d21-offers",
+      "settings": {
+        "bg_color": "#f2f2f2",
+        "accent_color": "#10b981",
+        "title": "Choisis ton offre",
+        "subtitle": "Choisis le guide qui correspond à ton objectif et commence à générer des résultats dès aujourd'hui",
+        "tab3_name": "PACK ULTIME",
+        "tab1_name": "FOURNISSEUR",
+        "tab2_name": "E-BOOK 1 à 10K/mois",
+        "promo_text": "Promo limitée — disponible 48H",
+        "cycle_hours": 48,
+        "date_prefix": "Jusqu'au",
+        "card3_variant_id": "58205509583196",
+        "card3_name": "PACK ULTIME",
+        "card3_badge": "LE + CHOISIS",
+        "card3_desc": "Le combo complet. Fournisseur authentique et 1.1 + la méthode 0 à 10k/mois réunis en une seule offre. Tout ce qu'il te faut pour démarrer du bon pied et scaler, sans rien laisser au hasard. L'offre la plus choisie et la plus rentable.",
+        "card3_compare": "25,98",
+        "card3_price": "21,99",
+        "card3_price_label": "Paiement unique • Accès à vie",
+        "card3_features": "Accès fournisseur 1.1 | Plan 0 à 10k/mois | Les 2 PDF complets | 1 Ebook avec le plan",
+        "card3_cta": "Je prends tout",
+        "card1_variant_id": "57447689978204",
+        "card1_name": "PACK FOURNI",
+        "card1_badge": "",
+        "card1_desc": "Ce guide complet te donne accès à mon Fournisseur 1.1 & Authentique avec plusieur étapes pour bien comprendre le fonctionnement du fournisseur et comment prendre contact.",
+        "card1_price": "9,99",
+        "card1_price_label": "Paiement unique • Accès à vie",
+        "card1_features": "Accès fournisseur | Quelque stratégie | 1 PDF avec tout les contenant | Plan de lancement",
+        "card1_cta": "Acheter maintenant",
+        "card2_disabled": false,
+        "card2_disabled_text": "Bientôt disponible",
+        "card2_variant_id": "58205398597980",
+        "card2_name": "EBOOK 1 à 10K/MOIS",
+        "card2_desc": "Le Guide de l'Achat-Revente sur Vinted. Un ebook premium de 58 pages et 11 chapitres (+ conclusion) qui te prend par la main du fournisseur jusqu'à tes premiers 10k/mois. Que du concret : études de cas, exercices pratiques et checklists à appliquer directement.",
+        "card2_price": "15,99",
+        "card2_price_label": "Paiement unique • Accès à vie",
+        "card2_features": "Plan d'action 0 à 10K/mois | 8 pages structurées en 11 chapitres | Photos produits pro | Lexique, budget de départ  |  Setup, KPIs, stratégies",
+        "card2_cta": "Passer le cap"
+      }
+    },
+    "faq": {
+      "type": "d21-faq",
+      "settings": {
+        "bg_color": "#f2f2f2",
+        "card_header_color": "#10b981",
+        "faq1_q": "Comment se passe la livraison du fournisseur ?",
+        "faq1_a": "Tu reçois ton accès par e-mail immédiatement après ton paiement, 24h/24, 7j/7.",
+        "faq2_q": "Le fournisseur livre-t-il en France et en Belgique ?",
+        "faq2_a": "Oui, livraison jusqu'en Europe. 2 semaines en moyenne, suivi inclus.",
+        "faq3_q": "Comment vous contacter si j'ai une question ?",
+        "faq3_a": "Écris-nous à cheapsappes@gmail.com — on répond généralement sous 24h.",
+        "faq_btn": "Voir la FAQ"
+      }
+    },
+    "testimonials": {
+      "type": "d21-testimonials",
+      "settings": {
+        "bg_color": "#f2f2f2",
+        "accent_color": "#10b981",
+        "title": "Ce qu'ils en pensent",
+        "subtitle": "Des centaines de vendeurs ont déjà transformé leur vie grâce à nos formations.",
+        "reviews_btn": "Voir + d'avis",
+        "t1_quote": "Premier mois, 1 500€ de bénéfice net. Le guide tient toutes ses promesses. !",
+        "t1_name": "Sarah",
+        "t1_role": "Vendeur • début il y a 3 mois",
+        "t2_quote": "Première vente en 4 jours seulement. Tout est expliqué simplement, parfait pour débuter. !",
+        "t2_name": "Maxime",
+        "t2_role": "Vendeur • début il y a 6 mois",
+        "t3_quote": "En plan 7 jours c'est actualisé, en une semaine j'ai tout, boutique + fournisseurs + premières commandes.",
+        "t3_name": "Thomas",
+        "t3_role": "Vendeur • début il y a 8 mois"
+      }
+    },
+    "footer": {
+      "type": "d21-footer",
+      "settings": {
+        "bg_color": "#1a1a2e",
+        "contact_email": "cheapsappes@gmail.com",
+        "footer_links": "Mentions légales:/pages/mentions-legales | Conditions Générales de Vente:/pages/cgv | Politique de remboursement:/pages/remboursement | Politique de confidentialité:/pages/confidentialite | Politique anti-fuite:/pages/anti-fuite",
+        "form_title": "Une question ? Écris-nous",
+        "form_sub": "On te répond dans les 24h. Gratuit, sans spam !",
+        "label_name": "Ton prénom",
+        "label_email": "Ton email",
+        "label_message": "Ton message",
+        "label_send": "Envoyer"
+      }
+    },
+    "stickynav": {
+      "type": "d21-stickynav",
+      "blocks": {
+        "b1": {
+          "type": "item",
+          "settings": {
+            "label": "Résultats",
+            "link": "#stats"
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "label": "Nos plans",
+            "link": "#offres"
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "label": "FAQ",
+            "link": "#faq"
+          }
+        },
+        "b4": {
+          "type": "item",
+          "settings": {
+            "label": "Avis",
+            "link": "#avis"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
+      "settings": {
+        "bg_color": "#1a1a1a",
+        "active_bg": "#ffffff",
+        "active_color": "#1a1a1a"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "stats",
+    "offers",
+    "faq",
+    "testimonials",
+    "footer",
+    "stickynav"
+  ]
+}
