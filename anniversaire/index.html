@@ -1,0 +1,1113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Joyeux anniversaire</title>
+<meta name="description" content="Un petit parcours de souvenirs en pixel art.">
+<!-- ART:CSS -->
+<style>
+  :root{
+    /* Le boitier autour de l'ecran : c'est la seule partie qui suit le theme du telephone */
+    --ground:#F6E4E9;
+    --ground-2:#EFD4DC;
+    --shell:#FFF8F3;
+    --shell-edge:#D9AEBC;
+    --chrome-ink:#6B4453;
+    --chrome-soft:#A87E8D;
+    --glow:rgba(217,79,99,.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#1E1620;
+      --ground-2:#150F18;
+      --shell:#2C1F2C;
+      --shell-edge:#4A3345;
+      --chrome-ink:#E8CBD6;
+      --chrome-soft:#9C7E8D;
+      --glow:rgba(243,185,200,.14);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1E1620; --ground-2:#150F18; --shell:#2C1F2C; --shell-edge:#4A3345;
+    --chrome-ink:#E8CBD6; --chrome-soft:#9C7E8D; --glow:rgba(243,185,200,.14);
+  }
+  :root[data-theme="light"]{
+    --ground:#F6E4E9; --ground-2:#EFD4DC; --shell:#FFF8F3; --shell-edge:#D9AEBC;
+    --chrome-ink:#6B4453; --chrome-soft:#A87E8D; --glow:rgba(217,79,99,.18);
+  }
+
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:radial-gradient(120% 80% at 50% 0%, var(--ground) 0%, var(--ground-2) 100%);
+    color:var(--chrome-ink);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:clamp(10px,2.2vh,20px);
+    padding:clamp(8px,2.5vw,28px);
+    box-sizing:border-box;
+    overscroll-behavior:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .shell{
+    position:relative;
+    padding:clamp(6px,1.6vw,14px);
+    background:var(--shell);
+    border:1px solid var(--shell-edge);
+    border-radius:clamp(10px,2vw,18px);
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset, 0 14px 40px -12px var(--glow), 0 2px 10px -4px rgba(0,0,0,.18);
+    line-height:0;
+  }
+  canvas{
+    display:block;
+    /* on dimensionne depuis la fenetre : un % ici serait circulaire
+       (le boitier s'ajuste au canvas) et retomberait sur les 160px natifs */
+    width:min(94vw, 50vh);
+    width:min(94vw, 50dvh);
+    height:auto;
+    aspect-ratio:160/256;
+    image-rendering:pixelated;
+    image-rendering:crisp-edges;
+    border-radius:3px;
+    background:#2B2140;
+    cursor:pointer;
+    touch-action:manipulation;
+  }
+  canvas:focus-visible{ outline:3px solid var(--chrome-ink); outline-offset:4px; }
+
+  .caption{
+    font-size:clamp(9px,1.6vw,11px);
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--chrome-soft);
+    text-align:center;
+    line-height:1.6;
+    margin:0;
+  }
+  .caption b{ color:var(--chrome-ink); font-weight:600; }
+
+  @media (max-height:640px){ .caption{display:none;} }
+</style>
+<!-- /ART:CSS -->
+</head>
+<body>
+<!-- ART:BODY -->
+<div class="shell">
+  <canvas id="screen" width="160" height="256" tabindex="0"
+          aria-label="Petit jeu d'anniversaire en pixel art. Appuie sur l'ecran pour avancer."></canvas>
+</div>
+<p class="caption">Appuie sur l'ecran pour avancer &nbsp;·&nbsp; <b>&#9829;</b></p>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   ▓▓▓  TOUT CE QUI EST PERSO SE MODIFIE ICI  ▓▓▓
+   Change juste le texte entre guillemets. Rien d'autre.
+   ============================================================ */
+const CONFIG = {
+
+  // Comment tu l'appelles (s'affiche sur l'ecran titre et a la fin)
+  prenom: "mon amour",
+
+  // Son age. Mets null si tu ne veux pas l'afficher :  age: null,
+  age: null,
+
+  // Les etapes du parcours. Tu peux en ajouter ou en enlever, ca s'adapte tout seul.
+  // icone possibles : "coeur" "etoile" "note" "lune" "cadeau" "fleur" "tasse" "doudou"
+  etapes: [
+    {
+      icone: "etoile",
+      titre: "Le tout début",
+      date: "la première fois",
+      texte: "Je me souviens de la première fois que je t'ai vue. Je savais pas encore que tu allais prendre autant de place."
+    },
+    {
+      icone: "note",
+      titre: "Ton rire",
+      date: "toujours",
+      texte: "Il y a ce moment où tu rigoles vraiment, celui que tu retiens pas. C'est mon son préféré."
+    },
+    {
+      icone: "tasse",
+      titre: "Nos soirées",
+      date: "trop peu souvent",
+      texte: "Rien de spectaculaire. Toi, moi, un truc à grignoter, et trois heures qui passent en dix minutes."
+    },
+    {
+      icone: "doudou",
+      titre: "Tes doudous",
+      date: "un peu trop",
+      texte: "Tu as toujours eu ce truc pour les peluches. Alors j'en ai fabriqué une rien que pour toi, en pixels."
+    },
+    {
+      icone: "fleur",
+      titre: "Les petits riens",
+      date: "tous les jours",
+      texte: "Les messages à pas d'heure, ta main dans la mienne, tes bruits quand tu dors. C'est ça en vrai, nous deux."
+    },
+    {
+      icone: "coeur",
+      titre: "Aujourd'hui",
+      date: "ton anniversaire",
+      texte: "Et te voilà arrivée tout en haut. Il me reste une dernière chose à te dire."
+    }
+  ],
+
+  // La lettre de fin. Chaque ligne entre guillemets = une page.
+  lettre: [
+    "Joyeux anniversaire.",
+    "Je suis pas très doué pour les grandes déclarations, alors j'ai fait ça à la place.",
+    "Chaque étape que tu viens de monter, c'est un bout de toi que je garde précieusement.",
+    "Merci d'être douce, merci de rire à mes bêtises, merci d'être toi.",
+    "Et j'ai très envie de remplir cette carte de plein d'autres souvenirs avec toi."
+  ],
+
+  // La toute derniere phrase, celle qui reste a l'ecran
+  signature: "Je t'aime"
+};
+
+/* ============================================================
+   ▓▓▓  A PARTIR D'ICI C'EST LA MACHINERIE  ▓▓▓
+   ============================================================ */
+
+/* ---------- ecran ---------- */
+const W = 160, H = 256;
+const cv = document.getElementById("screen");
+const ctx = cv.getContext("2d", { alpha:false });
+ctx.imageSmoothingEnabled = false;
+
+const REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- palette ---------- */
+const C = {
+  ink:      "#4A3A46",
+  inkSoft:  "#7B6473",
+  cream:    "#FBEFE0",
+  creamLo:  "#EBDAC7",
+  rose:     "#F3B9C8",
+  roseDeep: "#E0849F",
+  coeur:    "#D94F63",
+  coeurLo:  "#A83046",
+  or:       "#F0C868",
+  blanc:    "#FFF6EC"
+};
+
+/* teintes du monde : bas = aube doree, haut = nuit etoilee */
+const GRASS_LOW  = [0xBF,0xDA,0xA2], GRASS_HIGH = [0x53,0x6B,0x8C];
+const GRASS2_LOW = [0xA4,0xC4,0x86], GRASS2_HIGH= [0x43,0x57,0x74];
+const FEUIL_LOW  = [0x6E,0x9A,0x5C], FEUIL_HIGH = [0x30,0x42,0x5C];
+const DIRT_LOW   = [0xCC,0xA8,0x7C], DIRT_HIGH  = [0x8B,0x79,0xA6];
+
+function mix(a,b,t){
+  return "rgb(" + Math.round(a[0]+(b[0]-a[0])*t) + "," +
+                  Math.round(a[1]+(b[1]-a[1])*t) + "," +
+                  Math.round(a[2]+(b[2]-a[2])*t) + ")";
+}
+
+/* ---------- dessin bas niveau ----------
+   g pointe soit sur l'ecran, soit sur le calque du monde qu'on prepare
+   une seule fois au demarrage. */
+let g = ctx;
+function rect(x,y,w,h,c){ g.fillStyle=c; g.fillRect(x|0,y|0,w|0,h|0); }
+function px(x,y,c){ g.fillStyle=c; g.fillRect(x|0,y|0,1,1); }
+
+function sprite(art, x, y, pal, sc){
+  sc = sc || 1;
+  for(let r=0;r<art.length;r++){
+    const row = art[r];
+    for(let c=0;c<row.length;c++){
+      const ch = row[c];
+      if(ch === "." || ch === " ") continue;
+      const col = pal[ch];
+      if(!col) continue;
+      g.fillStyle = col;
+      g.fillRect((x + c*sc)|0, (y + r*sc)|0, sc, sc);
+    }
+  }
+}
+
+/* ============================================================
+   POLICE PIXEL 5x9 (faite main, accents francais inclus)
+   top = ligne de depart dans la cellule ; base sur la ligne 6
+   ============================================================ */
+const FONT = {};
+function G(ch, top, rows){ FONT[ch] = { top:top, rows:rows }; }
+
+/* --- majuscules --- */
+G("A",0,[".###.","#...#","#...#","#####","#...#","#...#","#...#"]);
+G("B",0,["####.","#...#","#...#","####.","#...#","#...#","####."]);
+G("C",0,[".###.","#...#","#....","#....","#....","#...#",".###."]);
+G("D",0,["####.","#...#","#...#","#...#","#...#","#...#","####."]);
+G("E",0,["#####","#....","#....","####.","#....","#....","#####"]);
+G("F",0,["#####","#....","#....","####.","#....","#....","#...."]);
+G("G",0,[".###.","#...#","#....","#.###","#...#","#...#",".###."]);
+G("H",0,["#...#","#...#","#...#","#####","#...#","#...#","#...#"]);
+G("I",0,["#####","..#..","..#..","..#..","..#..","..#..","#####"]);
+G("J",0,["....#","....#","....#","....#","#...#","#...#",".###."]);
+G("K",0,["#...#","#..#.","#.#..","##...","#.#..","#..#.","#...#"]);
+G("L",0,["#....","#....","#....","#....","#....","#....","#####"]);
+G("M",0,["#...#","##.##","#.#.#","#...#","#...#","#...#","#...#"]);
+G("N",0,["#...#","##..#","#.#.#","#..##","#...#","#...#","#...#"]);
+G("O",0,[".###.","#...#","#...#","#...#","#...#","#...#",".###."]);
+G("P",0,["####.","#...#","#...#","####.","#....","#....","#...."]);
+G("Q",0,[".###.","#...#","#...#","#...#","#.#.#","#..#.",".##.#"]);
+G("R",0,["####.","#...#","#...#","####.","#.#..","#..#.","#...#"]);
+G("S",0,[".####","#....","#....",".###.","....#","....#","####."]);
+G("T",0,["#####","..#..","..#..","..#..","..#..","..#..","..#.."]);
+G("U",0,["#...#","#...#","#...#","#...#","#...#","#...#",".###."]);
+G("V",0,["#...#","#...#","#...#","#...#","#...#",".#.#.","..#.."]);
+G("W",0,["#...#","#...#","#...#","#.#.#","#.#.#","##.##","#...#"]);
+G("X",0,["#...#","#...#",".#.#.","..#..",".#.#.","#...#","#...#"]);
+G("Y",0,["#...#","#...#",".#.#.","..#..","..#..","..#..","..#.."]);
+G("Z",0,["#####","....#","...#.","..#..",".#...","#....","#####"]);
+
+/* majuscules accentuees (corps ecrase pour loger l'accent) */
+G("É",0,["...#.","..#..","#####","#....","####.","#....","#####"]);
+G("È",0,[".#...","..#..","#####","#....","####.","#....","#####"]);
+G("Ê",0,["..#..",".#.#.","#####","#....","####.","#....","#####"]);
+G("À",0,[".#...","..#..",".###.","#...#","#####","#...#","#...#"]);
+G("Ç",0,[".###.","#...#","#....","#....","#....","#...#",".###.","..#..",".##.."]);
+
+/* --- chiffres --- */
+G("0",0,[".###.","#...#","#..##","#.#.#","##..#","#...#",".###."]);
+G("1",0,["..#..",".##..","..#..","..#..","..#..","..#..",".###."]);
+G("2",0,[".###.","#...#","....#","...#.","..#..",".#...","#####"]);
+G("3",0,["####.","....#","....#",".###.","....#","....#","####."]);
+G("4",0,["...#.","..##.",".#.#.","#..#.","#####","...#.","...#."]);
+G("5",0,["#####","#....","####.","....#","....#","#...#",".###."]);
+G("6",0,["..##.",".#...","#....","####.","#...#","#...#",".###."]);
+G("7",0,["#####","....#","...#.","..#..",".#...",".#...",".#..."]);
+G("8",0,[".###.","#...#","#...#",".###.","#...#","#...#",".###."]);
+G("9",0,[".###.","#...#","#...#",".####","....#","...#.",".##.."]);
+
+/* --- minuscules --- */
+G("a",2,[".###.","....#",".####","#...#",".####"]);
+G("b",0,["#....","#....","####.","#...#","#...#","#...#","####."]);
+G("c",2,[".###.","#....","#....","#....",".###."]);
+G("d",0,["....#","....#",".####","#...#","#...#","#...#",".####"]);
+G("e",2,[".###.","#...#","#####","#....",".###."]);
+G("f",0,["..##.",".#...","####.",".#...",".#...",".#...",".#..."]);
+G("g",2,[".####","#...#","#...#","#...#",".####","....#",".###."]);
+G("h",0,["#....","#....","####.","#...#","#...#","#...#","#...#"]);
+G("i",0,["..#..",".....",".##..","..#..","..#..","..#..",".###."]);
+G("ı",2,[".##..","..#..","..#..","..#..",".###."]);   /* i sans point */
+G("j",0,["...#.",".....","..##.","...#.","...#.","...#.","...#.","#..#.",".##.."]);
+G("k",0,["#....","#....","#..#.","#.#..","##...","#.#..","#..#."]);
+G("l",0,[".##..","..#..","..#..","..#..","..#..","..#..",".###."]);
+G("m",2,["##.#.","#.#.#","#.#.#","#...#","#...#"]);
+G("n",2,["####.","#...#","#...#","#...#","#...#"]);
+G("o",2,[".###.","#...#","#...#","#...#",".###."]);
+G("p",2,["####.","#...#","#...#","#...#","####.","#....","#...."]);
+G("q",2,[".####","#...#","#...#","#...#",".####","....#","....#"]);
+G("r",2,["#.##.","##..#","#....","#....","#...."]);
+G("s",2,[".####","#....",".###.","....#","####."]);
+G("t",0,[".#...",".#...","####.",".#...",".#...",".#..#","..##."]);
+G("u",2,["#...#","#...#","#...#","#..##",".##.#"]);
+G("v",2,["#...#","#...#","#...#",".#.#.","..#.."]);
+G("w",2,["#...#","#...#","#.#.#","#.#.#",".#.#."]);
+G("x",2,["#...#",".#.#.","..#..",".#.#.","#...#"]);
+G("y",2,["#...#","#...#","#...#","#...#",".####","....#",".###."]);
+G("z",2,["#####","...#.","..#..",".#...","#####"]);
+
+/* --- ponctuation & symboles --- */
+G(" ",0,[]);
+G(".",6,["..#.."]);
+G(",",6,["..##.","..#..",".#..."]);
+G("!",0,["..#..","..#..","..#..","..#..","..#..",".....","..#.."]);
+G("?",0,[".###.","#...#","....#","...#.","..#..",".....","..#.."]);
+G("'",0,["..#..","..#.."]);
+G("’",0,["..#..","..#.."]);
+G("\"",0,[".#.#.",".#.#."]);
+G(":",2,["..#..",".....",".....",".....","..#.."]);
+G(";",2,["..#..",".....",".....",".....","..#..","..#..",".#..."]);
+G("-",4,[".###."]);
+G("–",4,["#####"]);
+G("(",0,["...#.","..#..",".#...",".#...",".#...","..#..","...#."]);
+G(")",0,[".#...","..#..","...#.","...#.","...#.","..#..",".#..."]);
+G("/",0,["....#","....#","...#.","..#..",".#...","#....","#...."]);
+G("+",2,["..#..","..#..","#####","..#..","..#.."]);
+G("♥",2,[".#.#.","#####","#####",".###.","..#.."]);          /* coeur */
+G("▼",3,["#####",".###.","..#.."]);                          /* fleche bas */
+G("★",1,["..#..","#####",".###.",".#.#.","##.##"]);          /* etoile */
+G("·",4,[".##..",".##.."]);
+
+/* accents combinables */
+const MARKS = {
+  aigu:    { top:0, rows:["...#.","..#.."] },
+  grave:   { top:0, rows:[".#...","..#.."] },
+  circo:   { top:0, rows:["..#..",".#.#."] },
+  trema:   { top:1, rows:[".#.#."] },
+  cedille: { top:7, rows:["..#..",".##.."] }
+};
+const COMPOSED = {
+  "é":["e","aigu"],   "è":["e","grave"],  "ê":["e","circo"],  "ë":["e","trema"],
+  "à":["a","grave"],  "â":["a","circo"],  "ä":["a","trema"],
+  "î":["ı","circo"], "ï":["ı","trema"],
+  "ô":["o","circo"],  "ö":["o","trema"],
+  "ù":["u","grave"],  "û":["u","circo"],  "ü":["u","trema"],
+  "ç":["c","cedille"]
+};
+
+const ADV = 6, LINE = 10;
+
+function drawGlyph(gl, x, y, col, sc){
+  if(!gl) return;
+  for(let r=0;r<gl.rows.length;r++){
+    const row = gl.rows[r];
+    for(let c=0;c<row.length;c++){
+      if(row[c] !== "#") continue;
+      g.fillStyle = col;
+      g.fillRect((x + c*sc)|0, (y + (gl.top + r)*sc)|0, sc, sc);
+    }
+  }
+}
+function drawChar(ch, x, y, col, sc){
+  const comp = COMPOSED[ch];
+  if(comp){
+    drawGlyph(FONT[comp[0]], x, y, col, sc);
+    drawGlyph(MARKS[comp[1]], x, y, col, sc);
+    return;
+  }
+  drawGlyph(FONT[ch], x, y, col, sc);
+}
+function textW(s, sc){ sc = sc||1; return s.length ? s.length*ADV*sc - sc : 0; }
+function text(s, x, y, col, sc){
+  sc = sc || 1;
+  for(let i=0;i<s.length;i++) drawChar(s[i], x + i*ADV*sc, y, col, sc);
+}
+function textC(s, y, col, sc){ sc = sc||1; text(s, ((W - textW(s,sc))/2)|0, y, col, sc); }
+
+/* retour a la ligne : on decoupe aux espaces */
+function wrap(str, cols){
+  const out = [];
+  str.split("\n").forEach(function(para){
+    let line = "";
+    para.split(" ").forEach(function(word){
+      if(!line.length){ line = word; }
+      else if(line.length + 1 + word.length <= cols){ line += " " + word; }
+      else { out.push(line); line = word; }
+    });
+    out.push(line);
+  });
+  return out;
+}
+/* decoupe un texte en pages de `rows` lignes max */
+function paginate(str, cols, rows){
+  const lines = wrap(str, cols), pages = [];
+  for(let i=0;i<lines.length;i+=rows) pages.push(lines.slice(i, i+rows));
+  return pages;
+}
+
+/* ============================================================
+   SPRITES
+   ============================================================ */
+const PAL_OURS = {
+  o:"#4A2F1C", b:"#B47C4A", s:"#96633A", p:"#E9A0B4",
+  m:"#F2DCC2", e:"#3A2418", n:"#C97B8C", w:"#FFFFFF"
+};
+const OURS = [
+  ".ooo........ooo.",
+  "obbbo......obbbo",
+  "obpbo......obpbo",
+  "obbbo......obbbo",
+  ".obboooooooobbo.",
+  ".obbbbbbbbbbbbo.",
+  ".obbbbbbbbbbbbo.",
+  ".obbeebbbbeebbo.",
+  ".obbeebbbbeebbo.",
+  ".obbmmmmmmmmbbo.",
+  ".obbmmmnnmmmbbo.",
+  ".obbmmmmmmmmbbo.",
+  "..obmmmmmmmmbo..",
+  "...oobbbbbboo...",
+  "..oobbbbbbbboo..",
+  ".obbbbmmmmbbbbo.",
+  ".obbbbmmmmbbbbo.",
+  "..obbbbbbbbbbo.."
+];
+const PIED = ["obbo","ommo"];
+
+const COEUR_S = [".#.#.","#####","#####",".###.","..#.."];
+const COEUR_L = [".##...##.","#########","#########",".#######.","..#####..","...###...","....#...."];
+
+const PAL_C  = { "#":C.coeur };
+const PAL_CL = { "#":C.blanc };
+
+/* decor */
+const FLEUR  = [".#.","###",".#."];
+const BUISSON= ["...##....","..####...",".#######.","#########","#########",".#######."];
+const ARBRE  = ["...###...","..#####..",".#######.",".#######.","#########",".#######.","..#####..","...###...","....#....","....#....","....#...."];
+const MAISON = [
+  "......#......",
+  ".....###.....",
+  "....#####....",
+  "...#######...",
+  "..#########..",
+  ".###########.",
+  ".#.........#.",
+  ".#..##.##..#.",
+  ".#..#####..#.",
+  ".#...###...#.",
+  ".#....#....#.",
+  ".###########."
+];
+
+const LUNE = [
+  "..####..",
+  ".###....",
+  "###.....",
+  "###.....",
+  "###.....",
+  "###.....",
+  ".###....",
+  "..####.."
+];
+
+/* icones 9x9 des etapes */
+const ICONES = {
+  coeur:  [".##...##.","#########","#########","#########",".#######.","..#####..","...###...","....#....",".........."],
+  etoile: ["....#....","....#....","...###...","#########",".#######.","..#####..","..##.##..",".##...##.",".#.....#."],
+  note:   ["....#####","....#...#","....#####","....#....","....#....",".##.#....","####.....","####.....",".##......"],
+  lune:   ["...####..","..##..##.",".##......",".##......",".##......",".##......","..##..##.","...####..","........."],
+  cadeau: ["...#.#...","..##.##..",".#######.",".###.###.",".#######.",".###.###.",".###.###.",".#######.","........."],
+  fleur:  ["...###...","..#####..",".##.#.##.",".##.#.##.","..#####..","...###...","....#....","...###...","....#...."],
+  tasse:  ["..#...#..","..#...#..",".........","########.","#......#.","#......##","#......#.","########.",".######.."],
+  doudou: ["##.....##","##.....##",".#######.","##.#.#.##","#########","#.#####.#","#..###..#",".#######.","..#####.."]
+};
+const ICONE_COL = {
+  coeur:C.coeur, etoile:C.or, note:C.roseDeep, lune:"#8E7FB8",
+  cadeau:C.coeur, fleur:C.roseDeep, tasse:"#B4835A", doudou:"#B47C4A"
+};
+
+/* ============================================================
+   MONDE
+   ============================================================ */
+const ETAPES = CONFIG.etapes;
+const N = ETAPES.length;
+const MAP_H = 180;                       /* zone visible de la carte */
+const SPACING = 100;
+const WORLD_H = 70 + N * SPACING + 50;
+
+const noeuds = [];
+for(let i=0;i<N;i++){
+  noeuds.push({
+    x: 80 + Math.round(Math.sin(i*1.15 + 0.6) * 40),
+    y: WORLD_H - 90 - i * SPACING
+  });
+}
+const DEPART = { x: 80, y: WORLD_H - 26 };
+const ARRIVEE = { x: 80, y: noeuds[N-1].y - 62 };
+const chemin = [DEPART].concat(noeuds, [ARRIVEE]);
+
+/* le chemin serpente : chaque segment est une courbe, pas une ligne droite */
+function pointSur(i, u){
+  const a = chemin[i], b = chemin[i+1];
+  const cx = (a.x + b.x)/2 + (i % 2 ? 17 : -17);
+  const cy = (a.y + b.y)/2;
+  const v = 1 - u;
+  return { x: v*v*a.x + 2*v*u*cx + u*u*b.x,
+           y: v*v*a.y + 2*v*u*cy + u*u*b.y };
+}
+
+
+/* decor pseudo-aleatoire mais stable */
+let seed = 20260802;
+function rnd(){ seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+const decor = [];
+for(let y = 20; y < WORLD_H + H - 20; y += 9){
+  for(let k=0;k<2;k++){
+    const x = Math.round(rnd() * 150);
+    /* on evite de poser du decor sur le chemin */
+    let loin = true;
+    for(let i=0;i<chemin.length-1 && loin;i++){
+      for(let u=0; u<=1; u+=0.04){
+        const p = pointSur(i, u);
+        if(Math.abs(p.y - y) < 13 && Math.abs(p.x - x) < 20){ loin = false; break; }
+      }
+    }
+    if(!loin) continue;
+    const r = rnd();
+    decor.push({ x:x, y:y + Math.round(rnd()*6),
+                 type: r < 0.5 ? "fleur" : (r < 0.82 ? "buisson" : "arbre"),
+                 teinte: rnd() });
+  }
+}
+/* touffes d'herbe : positions tirees une fois pour toutes, sinon
+   n'importe quel hachage calcule ligne par ligne dessine des diagonales */
+const touffes = [];
+for(let i=0;i<Math.round((WORLD_H + H)*1.2);i++){
+  touffes.push({ x: Math.round(rnd()*(W-3)), y: Math.round(rnd()*(WORLD_H + H)) });
+}
+
+const etoiles = [];
+for(let i=0;i<70;i++){
+  etoiles.push({ x: Math.round(rnd()*158), y: Math.round(rnd()*WORLD_H*0.5), ph: rnd()*6.28 });
+}
+
+/* ============================================================
+   SON (chiptune maison, zero fichier externe)
+   ============================================================ */
+let actx = null, master = null, muted = false, timer = null;
+let stepIdx = 0, nextT = 0;
+const BEAT = 0.46;
+const MELODIE = [64,67,69,67, 64,62,60,null, 62,65,67,65, 62,60,62,null,
+                 64,67,72,71, 69,67,64,null, 65,64,62,60, 60,null,null,null];
+const BASSE   = [48,45,41,43, 48,45,41,43];
+
+function hz(midi){ return 440 * Math.pow(2, (midi - 69) / 12); }
+
+function initAudio(){
+  if(actx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if(!AC) return;
+  actx = new AC();
+  master = actx.createGain();
+  master.gain.value = 0;
+  master.connect(actx.destination);
+  master.gain.linearRampToValueAtTime(0.085, actx.currentTime + 2.5);
+  nextT = actx.currentTime + 0.1;
+  stepIdx = 0;
+  timer = setInterval(scheduler, 30);
+}
+function voix(freq, t, dur, type, vol){
+  if(!actx) return;
+  const o = actx.createOscillator(), g = actx.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(master);
+  o.start(t); o.stop(t + dur + 0.02);
+}
+function scheduler(){
+  if(!actx) return;
+  while(nextT < actx.currentTime + 0.25){
+    const n = MELODIE[stepIdx % MELODIE.length];
+    if(n !== null){
+      voix(hz(n), nextT, BEAT*0.92, "square", 0.16);
+      voix(hz(n)*2.005, nextT, BEAT*0.5, "triangle", 0.05);
+    }
+    if(stepIdx % 4 === 0){
+      const b = BASSE[Math.floor(stepIdx/4) % BASSE.length];
+      voix(hz(b), nextT, BEAT*1.7, "triangle", 0.20);
+    }
+    nextT += BEAT;
+    stepIdx++;
+  }
+}
+function sfx(notes, type, vol, pas){
+  if(!actx || muted) return;
+  const t0 = actx.currentTime;
+  notes.forEach(function(n,i){ voix(hz(n), t0 + i*(pas||0.06), 0.14, type||"square", vol||0.22); });
+}
+const sfxAvance = function(){ sfx([76], "square", 0.18); };
+const sfxOuvre  = function(){ sfx([72,76,79], "square", 0.16, 0.055); };
+const sfxPas    = function(){ sfx([60], "triangle", 0.10); };
+const sfxFin    = function(){ sfx([60,64,67,72,76], "triangle", 0.24, 0.11); };
+
+function toggleMute(){
+  muted = !muted;
+  if(master) master.gain.linearRampToValueAtTime(muted ? 0 : 0.085, actx.currentTime + 0.2);
+}
+
+/* ============================================================
+   ETAT
+   ============================================================ */
+let etat = "titre";      /* titre | attente | marche | carte | finale | lettre | fin */
+let t = 0;               /* horloge globale (s) */
+let camY = WORLD_H - MAP_H;
+let camCible = camY;
+
+let ours = { x: DEPART.x, y: DEPART.y, seg: 0, prog: 0, sens: 1 };
+let traces = [];         /* petits coeurs laisses derriere */
+let etapeIdx = -1;       /* derniere etape atteinte */
+
+let pages = [], pageIdx = 0, revele = 0, fini = false;
+let carteAnim = 0;
+let finAnim = 0;
+
+/* la boite s'ajuste au nombre de lignes de la page et reste calee en bas */
+const BOX_X = 5, BOX_W = 150, BOX_BAS = 250;
+const COLS = 23, ROWS = 5;
+function boite(){
+  const n = Math.max(1, (pages[pageIdx] || [""]).length);
+  const h = 16 + n * LINE;
+  return { x:BOX_X, y:BOX_BAS - h, w:BOX_W, h:h };
+}
+
+function setDialogue(str){
+  pages = paginate(str, COLS, ROWS);
+  pageIdx = 0; revele = 0; fini = false;
+}
+function setPages(arr){
+  pages = [];
+  arr.forEach(function(p){ paginate(p, COLS, ROWS).forEach(function(pg){ pages.push(pg); }); });
+  pageIdx = 0; revele = 0; fini = false;
+}
+function pageLen(){
+  const p = pages[pageIdx] || [];
+  return p.reduce(function(a,l){ return a + l.length; }, 0);
+}
+
+/* ============================================================
+   INTERACTION
+   ============================================================ */
+function suivant(){
+  if(etat === "titre"){
+    initAudio();
+    etat = "attente";
+    setDialogue("Viens, je te montre.");
+    sfxOuvre();
+    return;
+  }
+  if(etat === "marche" || etat === "finale") return;
+
+  /* si du texte est en cours d'apparition : on l'affiche d'un coup */
+  if(!fini){ revele = pageLen(); fini = true; sfxAvance(); return; }
+
+  if(etat === "attente"){
+    if(etapeIdx >= N - 1){
+      etat = "finale"; ours.seg = N; ours.prog = 0; sfxOuvre();
+    }else{
+      etat = "marche"; ours.seg = etapeIdx + 1; ours.prog = 0;
+    }
+    return;
+  }
+  if(etat === "carte"){
+    if(pageIdx < pages.length - 1){ pageIdx++; revele = 0; fini = false; sfxAvance(); return; }
+    etat = "attente";
+    carteAnim = 0;
+    setDialogue(etapeIdx >= N - 1 ? "On y est presque." : "On continue ?");
+    sfxAvance();
+    return;
+  }
+  if(etat === "lettre"){
+    if(pageIdx < pages.length - 1){ pageIdx++; revele = 0; fini = false; sfxAvance(); return; }
+    etat = "fin"; finAnim = 0; sfxFin();
+    return;
+  }
+  if(etat === "fin"){
+    /* on rejoue */
+    etat = "titre"; etapeIdx = -1; traces = [];
+    ours.x = DEPART.x; ours.y = DEPART.y; ours.seg = 0; ours.prog = 0;
+    camY = camCible = WORLD_H - MAP_H;
+    sfxAvance();
+  }
+}
+
+/* bouton son en haut a droite de l'ecran */
+const MUTE = { x: W-16, y: 4, w: 12, h: 12 };
+function pointerLogique(ev){
+  const r = cv.getBoundingClientRect();
+  return { x: (ev.clientX - r.left) / r.width * W, y: (ev.clientY - r.top) / r.height * H };
+}
+cv.addEventListener("pointerdown", function(ev){
+  ev.preventDefault();
+  cv.focus({ preventScroll:true });
+  const p = pointerLogique(ev);
+  if(p.x >= MUTE.x-3 && p.x <= MUTE.x+MUTE.w+3 && p.y >= MUTE.y-3 && p.y <= MUTE.y+MUTE.h+3){
+    if(!actx) initAudio(); else toggleMute();
+    return;
+  }
+  suivant();
+});
+window.addEventListener("keydown", function(ev){
+  if(ev.key === " " || ev.key === "Enter" || ev.key === "ArrowRight" || ev.key === "ArrowUp"){
+    ev.preventDefault(); suivant();
+  }else if(ev.key.toLowerCase() === "m"){
+    if(!actx) initAudio(); else toggleMute();
+  }
+});
+
+/* ============================================================
+   RENDU
+   ============================================================ */
+function panneau(x,y,w,h,fond){
+  fond = fond || C.cream;
+  rect(x+2, y+3, w, h, "rgba(40,26,38,0.30)");
+  rect(x+1, y,   w-2, h,   C.ink);
+  rect(x,   y+1, w,   h-2, C.ink);
+  rect(x+2, y+1, w-4, h-2, fond);
+  rect(x+1, y+2, w-2, h-4, fond);
+  rect(x+2, y+2, w-4, 1, C.blanc);
+}
+
+function fleche(x,y){
+  if(Math.floor(t*2.4) % 2 === 0) drawChar("▼", x, y, C.coeur, 1);
+}
+
+function dessineTexte(){
+  const p = pages[pageIdx];
+  if(!p) return;
+  const b = boite();
+  panneau(b.x, b.y, b.w, b.h);
+  let reste = revele;
+  for(let i=0;i<p.length;i++){
+    const ligne = p[i];
+    const n = Math.max(0, Math.min(ligne.length, Math.floor(reste)));
+    if(n > 0) text(ligne.slice(0,n), b.x+6, b.y+7 + i*LINE, C.ink, 1);
+    reste -= ligne.length;
+    if(reste <= 0) break;
+  }
+  if(fini) fleche(b.x + b.w - 13, b.y + b.h - 11);
+}
+
+const NOTE = [
+  ".....##",
+  "..#####",
+  "..##..#",
+  "..#....",
+  "..#....",
+  "..#....",
+  "###....",
+  "###...."
+];
+function boutonSon(){
+  const on = actx && !muted;
+  /* pastille sombre pour rester lisible sur fond clair comme sur fond nuit */
+  rect(MUTE.x+1, MUTE.y,   MUTE.w-2, MUTE.h,   "rgba(40,26,38,0.34)");
+  rect(MUTE.x,   MUTE.y+1, MUTE.w,   MUTE.h-2, "rgba(40,26,38,0.34)");
+  sprite(NOTE, MUTE.x+3, MUTE.y+2, { "#": on ? "rgba(255,246,236,0.92)" : "rgba(255,246,236,0.34)" }, 1);
+  if(!on) for(let i=0;i<9;i++) px(MUTE.x+2+i, MUTE.y+10-i, "rgba(255,246,236,0.60)");
+}
+
+/* ---- le calque du monde, peint une seule fois au demarrage ----
+   Tout ce qui ne bouge jamais (herbe, chemin, decor) va la-dedans :
+   chaque image se contente ensuite d'en recopier la tranche visible. */
+const BG_H = WORLD_H + H;
+const calque = document.createElement("canvas");
+calque.width = W; calque.height = BG_H;
+const cctx = calque.getContext("2d", { alpha:false });
+
+/* 0 en bas du monde (aube doree), 1 tout en haut (nuit etoilee) */
+function alt(wy){ return Math.max(0, Math.min(1, 1 - wy / WORLD_H)); }
+
+/* matrice de Bayer 4x4 : le degrade se tisse au lieu de faire des bandes */
+const BAYER = [0,8,2,10, 12,4,14,6, 3,11,1,9, 15,7,13,5];
+const PALIERS = 22;
+
+function construireMonde(){
+  g = cctx;
+  for(let y=0; y<BG_H; y++){
+    const f  = alt(y) * PALIERS;
+    const i0 = Math.floor(f), fr = f - i0;
+    rect(0, y, W, 1, mix(GRASS_LOW, GRASS_HIGH, Math.min(1, i0/PALIERS)));
+    const suiv = mix(GRASS_LOW, GRASS_HIGH, Math.min(1, (i0+1)/PALIERS));
+    g.fillStyle = suiv;
+    for(let x=0; x<W; x++){
+      if(fr > (BAYER[(y & 3)*4 + (x & 3)] + 0.5) / 16) g.fillRect(x, y, 1, 1);
+    }
+  }
+  touffes.forEach(function(tf){
+    const c2 = mix(GRASS2_LOW, GRASS2_HIGH, alt(tf.y));
+    px(tf.x, tf.y+1, c2); px(tf.x+1, tf.y, c2); px(tf.x+2, tf.y+1, c2);
+  });
+  for(let i=0;i<chemin.length-1;i++){
+    for(let u=0; u<=1; u+=0.004){
+      const p = pointSur(i, u);
+      const wx = Math.round(p.x), wy = Math.round(p.y);
+      const col = mix(DIRT_LOW, DIRT_HIGH, alt(p.y));
+      rect(wx-1, wy, 3, 1, col);
+      if((wx + wy) % 2 === 0){ px(wx-2, wy, col); px(wx+2, wy, col); }
+    }
+  }
+  decor.forEach(function(d){
+    const q = alt(d.y);
+    if(d.type === "fleur"){
+      const petale = d.teinte < 0.4 ? C.rose : (d.teinte < 0.75 ? C.blanc : C.or);
+      sprite(FLEUR, d.x, d.y, { "#": petale }, 1);
+      px(d.x+1, d.y+1, C.or);
+    }else if(d.type === "buisson"){
+      sprite(BUISSON, d.x-4, d.y-3, { "#": mix(FEUIL_LOW, FEUIL_HIGH, q) }, 1);
+    }else{
+      sprite(ARBRE, d.x-4, d.y-10, { "#": mix(FEUIL_LOW, FEUIL_HIGH, q) }, 1);
+      rect(d.x, d.y+1, 1, 3, mix([0x7A,0x54,0x32],[0x40,0x32,0x4E], q));
+    }
+  });
+  g = ctx;
+}
+construireMonde();
+
+/* ---- la carte (vue de dessus) ---- */
+function dessineMonde(){
+  const top = Math.round(camY);
+  ctx.drawImage(calque, 0, top, W, H, 0, 0, W, H);
+
+  /* etoiles : elles scintillent, donc elles restent dessinees a chaque image */
+  etoiles.forEach(function(s){
+    const sy = s.y - top;
+    if(sy < -2 || sy > H) return;
+    const fade = 1 - Math.max(0, Math.min(1, s.y / (WORLD_H*0.55)));
+    const sc = REDUCED ? 0.8 : (0.55 + 0.45*Math.sin(t*2 + s.ph));
+    if(fade * sc > 0.42) px(s.x, sy, fade*sc > 0.75 ? C.blanc : "rgba(255,246,236,0.55)");
+  });
+
+  /* les etapes : un piquet avec un coeur */
+  noeuds.forEach(function(n, i){
+    const sy = n.y - top;
+    if(sy < -14 || sy > H+8) return;
+    const atteinte = i <= etapeIdx;
+    const bob = (REDUCED || !atteinte) ? 0 : Math.round(Math.sin(t*2.6 + i)*1);
+    rect(n.x, sy+1, 1, 5, "#7A5432");
+    sprite(COEUR_S, n.x-2, sy - 5 + bob, { "#": atteinte ? C.coeur : "rgba(251,239,224,0.55)" }, 1);
+    if(atteinte) px(n.x-1, sy-4+bob, C.blanc);
+  });
+
+  /* traces de pas en petits coeurs */
+  traces.forEach(function(p){
+    const sy = p.y - top;
+    if(sy < -4 || sy > H) return;
+    const a = Math.max(0, Math.min(1, p.a));
+    px(p.x, sy, a > 0.6 ? C.coeur : "rgba(217,79,99,0.5)");
+    px(p.x-1, sy-1, a > 0.8 ? C.roseDeep : "rgba(224,132,159,0.45)");
+    px(p.x+1, sy-1, a > 0.8 ? C.roseDeep : "rgba(224,132,159,0.45)");
+  });
+
+  /* la maison tout en haut */
+  const my = ARRIVEE.y - top - 14;
+  if(my > -20 && my < H){
+    sprite(MAISON, ARRIVEE.x-6, my, { "#": "rgba(251,239,224,0.92)" }, 1);
+    sprite(COEUR_S, ARRIVEE.x-2, my+7, PAL_C, 1);
+  }
+
+  /* l'ours */
+  const oy = ours.y - top;
+  if(oy > -24 && oy < H + 20) dessineOurs(ours.x - 8, oy - 18, etat === "marche");
+}
+
+function dessineOurs(x, y, marche, sc){
+  sc = sc || 1;
+  const cycle = marche ? Math.floor(t*8) % 2 : 0;
+  const bob = marche ? (cycle ? 0 : -1) : (REDUCED ? 0 : (Math.floor(t*1.6)%2 ? 0 : -1));
+  const oy = y + bob*sc;
+  sprite(OURS, x, oy, PAL_OURS, sc);
+  sprite(PIED, x+3*sc, oy + (18 + (marche && cycle ? -1 : 0))*sc, PAL_OURS, sc);
+  sprite(PIED, x+9*sc, oy + (18 + (marche && !cycle ? -1 : 0))*sc, PAL_OURS, sc);
+  /* la petite lueur dans les yeux */
+  rect(x+4*sc,  oy+7*sc, sc, sc, PAL_OURS.w);
+  rect(x+10*sc, oy+7*sc, sc, sc, PAL_OURS.w);
+}
+
+/* l'ours en grand, serrant un coeur contre lui */
+function oursCoeur(x, y){
+  const bob = (REDUCED ? 0 : (Math.floor(t*1.6)%2 ? 0 : -1)) * 2;
+  dessineOurs(x, y, false, 2);
+  const puls = REDUCED ? 0 : (Math.sin(t*3.2) > 0 ? 0 : 1);
+  sprite(COEUR_L, x + 7 - puls, y + 24 + bob - puls, PAL_C, 2);
+}
+
+/* ---- la vignette souvenir ---- */
+function dessineCarte(){
+  const e = ETAPES[etapeIdx];
+  if(!e) return;
+  const k = REDUCED ? 1 : Math.min(1, carteAnim / 0.22);
+  const h = Math.round(86 * k);
+  const y = 12 + Math.round((86 - h)/2);
+  rect(0, 0, W, H, "rgba(40,26,38,0.28)");
+  panneau(16, y, 128, h);
+  if(k < 1) return;
+
+  const ic = ICONES[e.icone] || ICONES.coeur;
+  sprite(ic, 76, y+9, { "#": ICONE_COL[e.icone] || C.coeur }, 1);
+
+  const titre = e.titre || "";
+  const sc = textW(titre, 2) <= 116 ? 2 : 1;
+  textC(titre, y + 26, C.ink, sc);
+
+  rect(40, y + 26 + (sc===2?22:12), 80, 1, C.creamLo);
+  sprite(COEUR_S, 77, y + 24 + (sc===2?20:10), { "#": C.rose }, 1);
+
+  const d = e.date || "";
+  textC(d, y + 26 + (sc===2?30:20), C.roseDeep, 1);
+
+  /* numero d'etape, en bas de la vignette */
+  const num = (etapeIdx+1) + " / " + N;
+  textC(num, y + h - 14, C.inkSoft, 1);
+}
+
+/* ---- ciel de la lettre ---- */
+function dessineCiel(alpha){
+  for(let y=0;y<H;y++){
+    const q = y / H;
+    const c = mix([0x2B,0x21,0x40], [0x6B,0x3E,0x5C], q);
+    rect(0, y, W, 1, c);
+  }
+  etoiles.forEach(function(s, i){
+    if(i % 2) return;
+    const yy = (s.y * 0.37) % H;
+    const sc = REDUCED ? 0.8 : (0.5 + 0.5*Math.sin(t*1.8 + s.ph));
+    if(sc > 0.45) px(s.x, yy, sc > 0.8 ? C.blanc : "rgba(255,246,236,0.5)");
+  });
+  /* lune */
+  sprite(LUNE, 126, 20, { "#": "rgba(255,246,236,0.92)" }, 1);
+  px(129, 26, "rgba(214,196,205,0.9)");
+  px(128, 31, "rgba(214,196,205,0.9)");
+}
+
+/* collines sombres au premier plan, pour que l'ours ait un sol sous les pattes */
+function colline(y0, freq, phase, amp, fond, bord){
+  for(let x=0;x<W;x++){
+    const h = y0 + Math.round(Math.sin(x*freq + phase)*amp + Math.sin(x*0.21 + phase*2));
+    rect(x, h, 1, H-h, fond);
+    px(x, h, bord);
+  }
+}
+function dessineSol(y0){
+  colline(y0, 0.055, 1.2, 2, "#3A2942", "#553C60");
+  /* brins d'herbe sur la crete du fond */
+  for(let x=2;x<W;x+=9){
+    const h = y0 + Math.round(Math.sin(x*0.055 + 1.2)*2 + Math.sin(x*0.21 + 2.4));
+    px(x, h-1, "#553C60");
+    if(x % 2) px(x+1, h-2, "#553C60");
+  }
+  /* lucioles entre les deux collines */
+  for(let i=0;i<9;i++){
+    const fx = (13 + i*19) % 154;
+    const fy = y0 + 6 + (i % 4) * 9 + (REDUCED ? 0 : Math.sin(t*0.8 + i*1.9) * 7);
+    const br = REDUCED ? 0.7 : 0.5 + 0.5*Math.sin(t*2.2 + i*2.6);
+    if(br > 0.45) px(fx, fy, br > 0.8 ? C.or : "rgba(240,200,104,0.55)");
+  }
+  colline(y0 + 46, 0.031, 3.7, 3, "#271A2F", "#3C2846");
+}
+
+let coeursMontants = [];
+function majCoeurs(dt){
+  if(REDUCED) return;
+  if(Math.random() < dt*2.4){
+    coeursMontants.push({ x: 20 + Math.random()*120, y: H + 6, v: 10 + Math.random()*14, ph: Math.random()*6.28, s: Math.random() < 0.3 });
+  }
+  coeursMontants.forEach(function(c){ c.y -= c.v * dt; });
+  coeursMontants = coeursMontants.filter(function(c){ return c.y > -10; });
+}
+function dessineCoeurs(){
+  coeursMontants.forEach(function(c){
+    const x = c.x + Math.sin(t*1.6 + c.ph) * 5;
+    sprite(COEUR_S, x, c.y, { "#": c.s ? C.rose : C.coeur }, 1);
+  });
+}
+
+/* ---- ecran titre ---- */
+function dessineTitre(){
+  dessineCiel(1);
+  dessineCoeurs();
+
+  textC("JOYEUX", 26, C.blanc, 2);
+  textC("ANNIVERSAIRE", 44, C.rose, 2);
+
+  const nom = CONFIG.prenom || "";
+  if(nom) textC(nom, 68, C.coeur, textW(nom, 2) <= 152 ? 2 : 1);
+  if(CONFIG.age) textC("★ " + CONFIG.age + " ANS ★", 88, C.or, 1);
+
+  dessineSol(150);
+  oursCoeur(64, 112);
+
+  if(Math.floor(t*1.6) % 2 === 0) textC("APPUIE POUR COMMENCER", 206, C.blanc, 1);
+  textC("▼", 220, C.rose, 1);
+}
+
+/* ---- ecran de fin ---- */
+function dessineFin(){
+  dessineCiel(1);
+  dessineCoeurs();
+
+  textC("JOYEUX", 26, C.blanc, 2);
+  textC("ANNIVERSAIRE", 44, C.rose, 2);
+  const nom = CONFIG.prenom || "";
+  if(nom) textC(nom, 68, C.coeur, textW(nom,2) <= 152 ? 2 : 1);
+
+  dessineSol(142);
+  oursCoeur(64, 104);
+
+  const sig = CONFIG.signature || "";
+  if(sig){
+    const sc = textW(sig, 2) <= 138 ? 2 : 1;
+    panneau(BOX_X, 178, BOX_W, sc === 2 ? 32 : 26);
+    textC(sig, 187, C.coeur, sc);
+  }
+  if(Math.floor(t*1.4) % 2 === 0) textC("APPUIE POUR REVOIR", 230, "rgba(255,246,236,0.75)", 1);
+}
+
+/* ============================================================
+   BOUCLE
+   ============================================================ */
+let last = performance.now();
+function boucle(now){
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  t += dt;
+
+  /* --- logique --- */
+  if(etat === "marche" || etat === "finale"){
+    const vitesse = REDUCED ? 3.2 : 1.0;
+    ours.prog = Math.min(1, ours.prog + dt * vitesse);
+    const e = ours.prog < 0.5 ? 2*ours.prog*ours.prog : 1 - Math.pow(-2*ours.prog+2, 2)/2;
+    const p = pointSur(ours.seg, e);
+    ours.x = p.x;
+    ours.y = p.y;
+
+    if(!REDUCED && Math.random() < dt*9){
+      traces.push({ x: Math.round(ours.x), y: Math.round(ours.y), a: 1 });
+      if(Math.random() < 0.35) sfxPas();
+    }
+    if(ours.prog >= 1){
+      if(etat === "marche"){
+        etapeIdx = ours.seg;
+        etat = "carte"; carteAnim = 0;
+        setDialogue(ETAPES[etapeIdx].texte);
+        sfxOuvre();
+      }else{
+        etat = "lettre";
+        setPages(CONFIG.lettre);
+        sfxOuvre();
+      }
+    }
+  }
+  if(etat === "carte") carteAnim += dt;
+
+  /* camera */
+  camCible = Math.max(0, Math.min(WORLD_H - MAP_H, ours.y - MAP_H*0.74));
+  camY += (camCible - camY) * Math.min(1, dt * (REDUCED ? 12 : 4.5));
+
+  /* machine a ecrire */
+  if(!fini && pages.length){
+    revele += dt * 34;
+    if(revele >= pageLen()){ revele = pageLen(); fini = true; }
+  }
+  traces.forEach(function(p){ p.a -= dt*0.12; });
+  traces = traces.filter(function(p){ return p.a > 0.15; });
+  if(etat === "titre" || etat === "fin" || etat === "lettre") majCoeurs(dt);
+
+  /* --- rendu --- */
+  ctx.fillStyle = "#2B2140"; ctx.fillRect(0,0,W,H);
+
+  if(etat === "titre"){
+    dessineTitre();
+  }else if(etat === "lettre" || etat === "fin"){
+    if(etat === "fin"){ dessineFin(); }
+    else{
+      dessineCiel(1);
+      dessineCoeurs();
+      dessineSol(138);
+      oursCoeur(64, 100);
+      dessineTexte();
+    }
+  }else{
+    dessineMonde();
+    if(etat === "carte") dessineCarte();
+    dessineTexte();
+  }
+  boutonSon();
+
+  requestAnimationFrame(boucle);
+}
+requestAnimationFrame(boucle);
+
+})();
+</script>
+<!-- /ART:BODY -->
+</body>
+</html>
