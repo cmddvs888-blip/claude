@@ -111,10 +111,10 @@
 const CONFIG = {
 
   // Comment tu l'appelles (s'affiche sur l'ecran titre et a la fin)
-  prenom: "mon amour",
+  prenom: "Mellina",
 
   // Son age. Mets null si tu ne veux pas l'afficher :  age: null,
-  age: null,
+  age: 19,
 
   // Les etapes du parcours. Tu peux en ajouter ou en enlever, ca s'adapte tout seul.
   // icone possibles : "coeur" "etoile" "note" "lune" "cadeau" "fleur" "tasse" "doudou"
@@ -167,7 +167,7 @@ const CONFIG = {
   ],
 
   // La toute derniere phrase, celle qui reste a l'ecran
-  signature: "Je t'aime"
+  signature: "C'est le premier anniversaire que je passe avec toi. J'espère que ce sera le premier et pas le dernier. Je t'aime."
 };
 
 /* ============================================================
@@ -1018,17 +1018,27 @@ function dessineFin(){
   textC("ANNIVERSAIRE", 44, C.rose, 2);
   const nom = CONFIG.prenom || "";
   if(nom) textC(nom, 68, C.coeur, textW(nom,2) <= 152 ? 2 : 1);
+  if(CONFIG.age) textC("★ " + CONFIG.age + " ANS ★", 88, C.or, 1);
 
-  dessineSol(142);
-  oursCoeur(64, 104);
-
+  /* le panneau de signature se cale en bas et grandit avec le texte */
   const sig = CONFIG.signature || "";
-  if(sig){
-    const sc = textW(sig, 2) <= 138 ? 2 : 1;
-    panneau(BOX_X, 178, BOX_W, sc === 2 ? 32 : 26);
-    textC(sig, 187, C.coeur, sc);
+  const lignes = sig ? wrap(sig, COLS) : [];
+  const ph = lignes.length ? 14 + lignes.length*LINE : 0;
+  const py = Math.max(176, 250 - ph);
+
+  dessineSol(166);
+  oursCoeur(64, 126);
+
+  if(lignes.length){
+    panneau(BOX_X, py, BOX_W, ph);
+    /* une seule ligne : on la met en gros, sinon on reste lisible */
+    if(lignes.length === 1 && textW(sig, 2) <= 138){
+      textC(sig, py + 8, C.coeur, 2);
+    }else{
+      lignes.forEach(function(l, i){ textC(l, py + 7 + i*LINE, C.coeur, 1); });
+    }
+    if(Math.floor(t*1.6) % 2 === 0) drawChar("♥", BOX_X + BOX_W - 12, py + ph - 11, C.rose, 1);
   }
-  if(Math.floor(t*1.4) % 2 === 0) textC("APPUIE POUR REVOIR", 230, "rgba(255,246,236,0.75)", 1);
 }
 
 /* ============================================================
