@@ -19,6 +19,7 @@ Tout ce qui est perso est regroupé tout en haut du `<script>`, dans le bloc
 | `prenom` | Le petit nom affiché sur l'écran titre et à la fin |
 | `age` | Un badge « ★ N ANS ★ ». Mettre `null` pour ne pas l'afficher |
 | `etapes` | Les souvenirs du parcours. En ajouter ou en enlever : le chemin, la carte et le compteur s'adaptent tout seuls |
+| `photos` | Sur une étape : une ou deux clés du bloc `PHOTOS`. Une étape avec photos n'affiche pas d'icône, et sa carte s'agrandit |
 | `lettre` | La lettre finale. Chaque ligne du tableau = une page. Les textes trop longs se recoupent automatiquement |
 | `signature` | La phrase qui reste affichée à la toute fin |
 
@@ -28,6 +29,21 @@ Les icônes possibles pour une étape : `coeur`, `etoile`, `note`, `lune`,
 Les accents français sont gérés (é è ê à â î ô û ù ç). La police est dessinée
 pixel par pixel dans le fichier, donc les caractères en dehors de cette liste
 s'affichent comme une espace.
+
+## Les photos
+
+Elles sont encodées en data URI dans le bloc `PHOTOS`, en bas de la config :
+le fichier reste donc autonome, sans dossier d'images à trimballer.
+
+Elles ne sont **pas** dessinées dans le canvas. Celui-ci ne fait que 160×256
+pixels : une photo y serait réduite à 60 pixels de large puis réagrandie en
+gros carrés. Elles sont donc superposées en HTML (`#photos`), positionnées en
+pourcentages qui correspondent exactement à l'emplacement prévu dans la carte,
+et affichées en pleine qualité dans un cadre dessiné, lui, au pixel.
+
+Pour en ajouter une : recadrer au ratio 60/86 (portrait), réduire à 400 px de
+large, exporter en JPEG qualité ~78, encoder en base64 et ajouter l'entrée
+dans `PHOTOS`. Compter ~50 Ko par photo.
 
 ## Détails techniques
 
