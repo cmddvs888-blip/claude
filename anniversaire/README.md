@@ -9,6 +9,20 @@ et l'arrivée débouche sur une lettre.
   il suffit de l'ouvrir dans un navigateur.
 - `qr-anniversaire.png` — le QR code qui pointe vers la version en ligne.
 
+## Mettre en ligne
+
+Le fichier est autonome : n'importe quel hébergeur statique suffit, il n'y a
+rien à construire.
+
+**Netlify Drop** — aller sur <https://app.netlify.com/drop> et déposer un
+dossier contenant `index.html` (et `robots.txt` si on veut rester hors des
+moteurs de recherche). L'URL est immédiate ; elle se renomme ensuite dans
+*Site configuration → Change site name*.
+
+⚠️ Une page déposée là est **publique** : tout le monde peut l'ouvrir en
+connaissant l'URL. Le `robots.txt` et la balise `noindex` empêchent le
+référencement, pas l'accès direct.
+
 ## Personnaliser
 
 Tout ce qui est perso est regroupé tout en haut du `<script>`, dans le bloc
