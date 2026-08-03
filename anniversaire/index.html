@@ -184,38 +184,21 @@ const CONFIG = {
       titre: "Les petites choses",
       date: "tu sais les aimer",
       texte: "Tu sais apprécier les petites choses, les petites attentions, les petits mots, les petites fleurs. En prendre soin, les aimer. C'est quelque chose que je n'ai jamais vu chez personne d'autre."
-    },
-    {
-      icone: "doudou",
-      titre: "Tes doudous",
-      date: "un peu trop",
-      texte: "Tu as toujours eu ce truc pour les peluches. Alors j'en ai fabriqué une rien que pour toi, en pixels."
-    },
-    {
-      icone: "fleur",
-      titre: "Les petits riens",
-      date: "tous les jours",
-      texte: "Les messages à pas d'heure, ta main dans la mienne, tes bruits quand tu dors. C'est ça en vrai, nous deux."
-    },
-    {
-      icone: "coeur",
-      titre: "Aujourd'hui",
-      date: "ton anniversaire",
-      texte: "Et te voilà arrivée tout en haut. Il me reste une dernière chose à te dire."
     }
   ],
 
   // La lettre de fin. Chaque ligne entre guillemets = une page.
   lettre: [
-    "Joyeux anniversaire.",
-    "Je suis pas très doué pour les grandes déclarations, alors j'ai fait ça à la place.",
-    "Chaque étape que tu viens de monter, c'est un bout de toi que je garde précieusement.",
-    "Merci d'être douce, merci de rire à mes bêtises, merci d'être toi.",
-    "Et j'ai très envie de remplir cette carte de plein d'autres souvenirs avec toi."
+    "En bref, ça fait maintenant bientôt 5 mois qu'on est ensemble.",
+    "J'ai appris à te connaître. À connaître cette femme en or qui a été mise au monde il y a 19 ans.",
+    "Je ne savais pas que j'allais t'aimer à ce point.",
+    "Aujourd'hui tu as 19 ans. Une date importante : c'est le premier anniversaire qu'on passe ensemble.",
+    "Et j'espère être encore là pour le dernier.",
+    "Alors profite bien de ta journée. Bon anniversaire, Mellina."
   ],
 
   // La toute derniere phrase, celle qui reste a l'ecran
-  signature: "C'est le premier anniversaire que je passe avec toi. J'espère que ce sera le premier et pas le dernier. Je t'aime."
+  signature: "Je t'aime"
 };
 
 /* Les photos, encodees directement dans le fichier pour qu'il reste autonome.
@@ -1179,8 +1162,11 @@ function dessineFin(){
   const ph = lignes.length ? 14 + lignes.length*LINE : 0;
   const py = Math.max(176, 250 - ph);
 
-  dessineSol(166);
-  oursCoeur(64, 126);
+  /* l'ours suit le panneau : sinon une signature courte le laisse tout en haut
+     avec un grand vide en dessous */
+  const yOurs = Math.max(104, Math.min(150, py - 84));
+  dessineSol(yOurs + 40);
+  oursCoeur(64, yOurs);
 
   if(lignes.length){
     panneau(BOX_X, py, BOX_W, ph);
