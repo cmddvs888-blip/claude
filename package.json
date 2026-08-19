@@ -1,0 +1,19 @@
+{
+  "name": "spider-neuille",
+  "version": "1.0.0",
+  "description": "Spider Neuille — jeu d'action 3D dans lequel on se balance de toile en toile au-dessus de Neuille-sur-Toile.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "build": "node tools/build.mjs",
+    "test": "node tools/smoke.mjs && node tools/sim.mjs",
+    "test:sim": "node tools/sim.mjs",
+    "test:dist": "node tools/build.mjs && node tools/check-dist.mjs",
+    "shots": "node tools/vista.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "playwright": "^1.62.0"
+  }
+}

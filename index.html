@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Spider Neuille</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🕷️</text></svg>" />
+<link rel="stylesheet" href="./styles.css" />
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+</head>
+<body>
+<div id="app">
+  <canvas id="scene"></canvas>
+
+  <!-- ======================= HUD ======================= -->
+  <div id="hud" class="hidden">
+    <div id="reticle"><span class="dot"></span><span class="ring"></span></div>
+
+    <div id="hud-left">
+      <div class="gauge">
+        <div class="gauge-label">VIE</div>
+        <div class="gauge-bar"><i id="bar-health"></i></div>
+      </div>
+      <div class="gauge">
+        <div class="gauge-label">TOILE</div>
+        <div class="gauge-bar web"><i id="bar-web"></i></div>
+      </div>
+      <div id="speedo"><b id="speed-val">0</b><span>km/h</span></div>
+    </div>
+
+    <div id="hud-right">
+      <div id="score-box">
+        <div class="score-label">SCORE</div>
+        <div id="score-val">0</div>
+        <div id="combo" class="hidden">STYLE ×<b id="combo-val">1</b><i id="combo-fuse"></i></div>
+      </div>
+      <canvas id="minimap" width="180" height="180"></canvas>
+    </div>
+
+    <div id="objective">
+      <div id="obj-title">Objectif</div>
+      <div id="obj-text">…</div>
+      <div id="obj-dist">— m</div>
+    </div>
+
+    <div id="waypoint"><div class="wp-arrow"></div><div class="wp-dist"></div></div>
+    <div id="toasts"></div>
+    <div id="damage-flash"></div>
+    <div id="hint">Clic pour jouer</div>
+  </div>
+
+  <!-- ======================= MENU ======================= -->
+  <div id="menu">
+    <div class="menu-card">
+      <h1 class="logo"><span>SPIDER</span><em>NEUILLE</em></h1>
+      <p class="tagline">Un grand pouvoir implique de grandes nouilles.</p>
+
+      <div class="keys">
+        <div class="k-row"><span class="k">Z</span><span class="k">Q</span><span class="k">S</span><span class="k">D</span><p>Se déplacer</p></div>
+        <div class="k-row"><span class="k wide">Trackpad / Souris</span><p>Caméra</p></div>
+        <div class="k-row"><span class="k wide">Clic gauche (maintenu)</span><p>Tisser une toile &amp; se balancer</p></div>
+        <div class="k-row"><span class="k wide">Clic droit</span><p>Toile-éclair (se propulser)</p></div>
+        <div class="k-row"><span class="k wide">Espace</span><p>Sauter / lâcher la toile</p></div>
+        <div class="k-row"><span class="k wide">Maj</span><p>Sprint / piqué</p></div>
+        <div class="k-row"><span class="k">E</span><p>Attaque (voyous)</p></div>
+        <div class="k-row"><span class="k">F</span><p>Tir de toile (emballe un voyou)</p></div>
+        <div class="k-row"><span class="k wide">Au contact d'un mur</span><p>Tu t'y accroches et tu grimpes</p></div>
+        <div class="k-row"><span class="k wide">Molette / 2 doigts</span><p>Zoom caméra</p></div>
+        <div class="k-row"><span class="k">R</span><p>Se replacer sur un toit</p></div>
+        <div class="k-row"><span class="k">M</span><span class="k">P</span><p>Son / Pause</p></div>
+      </div>
+
+      <button id="play">JOUER</button>
+      <div class="opts">
+        <label>Sensibilité <input id="sens" type="range" min="0.2" max="3" step="0.1" value="1" /></label>
+        <label class="chk"><input id="invert" type="checkbox" /> Inverser Y</label>
+        <label class="chk"><input id="quality" type="checkbox" checked /> Ombres</label>
+      </div>
+      <p class="foot">Astuce : maintiens le clic gauche en l'air pour t'accrocher aux immeubles, relâche au point bas pour être catapulté.</p>
+    </div>
+  </div>
+
+  <!-- ======================= PAUSE ======================= -->
+  <div id="pause" class="hidden">
+    <div class="menu-card small">
+      <h2>PAUSE</h2>
+      <div id="pause-stats"></div>
+      <button id="resume">REPRENDRE</button>
+      <button id="restart" class="ghost">RECOMMENCER</button>
+    </div>
+  </div>
+
+  <div id="loading"><div class="spinner"></div><p>Tissage de Neuille…</p></div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
