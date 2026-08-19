@@ -10,7 +10,7 @@ const out = await build({
   write: false, legalComments: 'none',
 });
 const js = out.outputFiles[0].text;
-const css = fs.readFileSync('styles.css', 'utf8');
+const css = fs.readFileSync('vendor/fonts.css', 'utf8') + '\n' + fs.readFileSync('styles.css', 'utf8');
 const html = fs.readFileSync('index.html', 'utf8');
 
 // on récupère le balisage de <body> sans le <script type="module">

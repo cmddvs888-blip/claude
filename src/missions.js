@@ -40,8 +40,13 @@ class Beacon {
   }
   show(pos) { this.group.position.copy(pos); this.group.visible = true; }
   hide() { this.group.visible = false; }
-  update(dt) {
+  update(dt, playerPos) {
     this.ring.rotation.z += dt * 0.9;
+    // la colonne s'efface quand on arrive dessus : elle masquerait la vue
+    if (playerPos) {
+      const d = this.group.position.distanceTo(playerPos);
+      this.col.material.opacity = Math.max(0.02, Math.min(0.11, d / 420));
+    }
     const k = 1 + 0.1 * Math.sin(performance.now() / 300);
     this.ring.scale.set(k, k, 1);
     this.sprite.position.y = 3.2 + Math.sin(performance.now() / 500) * 0.4;
@@ -161,7 +166,7 @@ export class Missions {
   }
 
   update(dt, player) {
-    this.beacon.update(dt);
+    this.beacon.update(dt, player.pos);
     if (this.parcel.visible) {
       this.parcel.rotation.y += dt * 1.4;
       this.parcel.position.y += Math.sin(performance.now() / 420) * dt * 0.6;

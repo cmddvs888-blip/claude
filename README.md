@@ -4,6 +4,7 @@ Un jeu d'action **3D** dans lequel on se balance de toile en toile au-dessus de
 **Neuille-sur-Toile**, une ville générée entièrement par le code.
 Tout tient dans le navigateur : pas de moteur de jeu, pas d'images, pas de sons
 à télécharger — textures, personnages et bruitages sont fabriqués à l'exécution.
+Aucune requête réseau, y compris pour les polices.
 
 > *Un grand pouvoir implique de grandes nouilles.*
 
@@ -51,6 +52,8 @@ multiplicateur **STYLE** (jusqu'à ×8).
 
 ![La Tour Neuille](docs/apercu-tour.png)
 
+![L'interface en vol](docs/apercu-hud.png)
+
 ## Comment c'est fait
 
 | Fichier | Rôle |
@@ -66,6 +69,7 @@ multiplicateur **STYLE** (jusqu'à ×8).
 | `src/textures.js` | Façades, toitures, bitume, ciel, costume : tout est dessiné dans des `<canvas>` |
 | `src/audio.js` | Bruitages synthétisés (WebAudio), y compris le vent lié à la vitesse |
 | `src/hud.js` | Interface, minimap, boussole d'objectif |
+| `vendor/fonts.css` | Anton et Barlow Semi Condensed embarquées en base64 |
 
 Quelques partis pris techniques :
 
@@ -82,12 +86,15 @@ Quelques partis pris techniques :
 - **Disposition AZERTY.** Les touches sont lues via `event.key`, donc `Z Q S D`
   correspond aux lettres réellement tapées quel que soit le clavier
   (`W A S D` fonctionne aussi).
+- **Repli sans capture du pointeur.** Si le navigateur refuse le *pointer lock*
+  (page intégrée dans un cadre restreint), le jeu bascule en visée libre au bout
+  d'une demi-seconde au lieu de rester bloqué.
 
 ## Développement
 
 ```bash
 npm install
-npm run build      # -> dist/spider-neuille.html (fichier unique, 580 Ko)
+npm run build      # -> dist/spider-neuille.html (fichier unique, 696 Ko)
 npm test           # test de fumée + simulation physique 60 Hz, headless
 npm run shots      # captures d'écran de contrôle dans tools/
 ```
